@@ -4,13 +4,21 @@ const jwt = require('express-jwt');
 const jwtAuthz = require('express-jwt-authz');
 const jwksRsa = require('jwks-rsa');
 const cors = require('cors');
+var spawn = require("child_process").spawn;
+
+
 require('dotenv').config();
+
+
+var homepage=require("./server/homepage.js")
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
   throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file'
 }
 
 app.use(cors());
+
+
 
 const checkJwt = jwt({
   // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
@@ -27,12 +35,11 @@ const checkJwt = jwt({
   algorithms: ['RS256']
 });
 
+
 const checkScopes = jwtAuthz([ 'read:messages' ]);
 const checkScopesAdmin = jwtAuthz([ 'write:messages' ]);
 
-app.get('/api/public', function(req, res) {
-  res.json({ message: "Hello from a public endpoint! You don't need to be authenticated to see this." });
-});
+app.get('/api/public', homepage);
 
 app.get('/api/private',checkJwt, function(req, res) {
   res.json({ message: "Hello from a private endpoint1! You need to be authenticated and have a scope of read:messages to see this." });
