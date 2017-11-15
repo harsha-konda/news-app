@@ -21,3 +21,8 @@ docker kill $(docker ps -q)
 ```
 docker run -it news-app /bin/bash
 ```
+
+### logs
+```
+docker logs $(docker ps -q)
+```

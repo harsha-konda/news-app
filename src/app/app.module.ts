@@ -18,6 +18,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { ScopeGuardService } from './auth/scope-guard.service';
+import { CommentComponent } from './comment/comment.component';
 
 
 
@@ -35,7 +36,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     PingComponent,
     ProfileComponent,
     AdminComponent,
-    CallbackComponent
+    CallbackComponent,
+    CommentComponent
   ],
   imports: [
     BrowserModule,

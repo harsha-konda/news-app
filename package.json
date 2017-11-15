@@ -4,13 +4,14 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "npm-run-all --parallel server client",
+    "start": "npm-run-all --parallel server client runflask",
     "server": "node server.js",
     "client": "ng serve",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "runflask":"python3 flask/pyService.py"
   },
   "private": true,
   "dependencies": {

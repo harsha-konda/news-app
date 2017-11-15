@@ -1,10 +1,8 @@
 from flask import Flask, request
 import sys
-import StringIO
 import json
 import os, sys
-from subprocess import Popen,PIPE
-
+import newspaper
 
 app = Flask(__name__, static_url_path='')
 
@@ -19,16 +17,14 @@ def handle():
 
         code=request.form['code']
 
-        target = open("test.py", 'w+')
-        target.write(code)
-        target.close()
-        p = Popen(['python', 'test.py'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
-        stdout = p.stdout.read()
-        stderr = p.stderr.read()
 
-        final_dump=json.dumps({"stderr":stderr,"stdout":stdout})
+        final_dump=json.dumps({"stderr":code,"stdout":"dpg"})
 
         return final_dump
 
+    if request.method=='GET':
+
+        return json.dumps({"newspaper":"some randomshit"})
+
 if __name__ == '__main__':
-    app.run(threaded=True, debug=True, host="0.0.0.0", port=6000)
+    app.run(threaded=True, debug=True, host="0.0.0.0", port=5000)
