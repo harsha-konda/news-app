@@ -22,6 +22,9 @@ import { CommentComponent } from './comment/comment.component';
 import { PostsComponent } from './posts/posts.component';
 
 import {PostsService} from './posts/posts.service';
+import { TopicsComponent } from './topics/topics.component';
+import {UsersService} from './profile/users.service';
+import {SearchService} from "./search.service"
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -39,7 +42,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AdminComponent,
     CallbackComponent,
     CommentComponent,
-    PostsComponent
+    PostsComponent,
+    TopicsComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +56,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthGuardService,
     ScopeGuardService,
     PostsService,
+    UsersService,
+    SearchService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,

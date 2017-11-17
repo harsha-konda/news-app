@@ -1,15 +1,36 @@
-<h4 *ngIf="auth.isAuthenticated()">
+<div *ngIf="auth.isAuthenticated()">
     <span *ngIf="auth.userHasScopes(['write:messages'])">
-      You can now view your <a routerLink="/admin">admin area</a>.
+      <a routerLink="/admin">admin area</a>.
     </span>
-</h4>
-<h4 *ngIf="!auth.isAuthenticated()">
-  You are not logged in! Please <a (click)="auth.login()">Log In</a> to continue.
-</h4>
-
-<!--<app-comment></app-comment>-->
-
-<app-posts></app-posts>
 
 
+  <div class="container-fluid col-sm-10">
+
+    <ul class="nav nav-tabs">
+      <li class="nav-item "
+          *ngFor="let sub of formattedSubs;let i = index;">
+        <a class="nav-link " [ngClass]="{'active': i == cur}" (click)="switchCur(i)" >{{sub}}</a>
+      </li>
+    </ul>
+    <app-posts [topic]="subs[cur]" style="padding: 1%;"></app-posts>
+  </div>
+
+
+</div>
+<div *ngIf="!auth.isAuthenticated()" >
+  <div class="jumbotron" style="background: url('https://s3.amazonaws.com/hkonda-code/Ocean-Sky-Resort-Awesome-Background.jpg');">
+    <h1 class="display-3 text-white">Hello!</h1>
+    <p class="lead text-white">A Personalized News Feed for those Short on Time!</p>
+    <hr class="my-4 ">
+    <p class="text-white">Signup or Login To Get very Own Personalized News Feed</p>
+    <p class="lead text-white">
+      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </p>
+  </div>
+
+  <div class="container-fluid">
+    <app-posts [topic]="" ></app-posts>
+  </div>
+
+</div>
 

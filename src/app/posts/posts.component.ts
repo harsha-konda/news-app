@@ -1,33 +1,58 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit,OnChanges} from '@angular/core';
 
 import {PostsService} from './posts.service';
+import {SearchService} from "../search.service";
+import {AuthService} from "../auth/auth.service";
 
 @Component({
   selector: 'app-posts',
   templateUrl: './posts.component.html',
   styleUrls: ['./posts.component.css']
 })
-export class PostsComponent implements OnInit {
+export class PostsComponent implements OnInit,OnChanges {
 
-  postService;
   posts;
-  constructor(postService : PostsService) {
-    this.postService=postService;
+  es;
+  auth;
+  @Input() topic: String="http://www.cnn.com";
+
+  page=0;
+  maxPages;
+
+  constructor(es:SearchService,auth:AuthService) {
+    this.es=es;
+    this.auth=auth;
   }
 
   ngOnInit() {
-    this.getFormData();
+    this.query();
   }
 
+  ngOnChanges(){
+    this.query();
+  }
 
-  getFormData() {
-    this.postService
-        .getFormData()
-        .subscribe(
-      data =>{
-            this.posts= data;
-            console.log(data);
-      });;
+  query(){
+    this.es.search("link",this.topic,"news").then((result)=>{
+
+       this.posts=(result.hits.hits);
+       var num=Math.ceil(this.posts.length/10)
+       this.maxPages= Array(num>10?10:num).fill(0).map((x,i)=>i);
+    }).catch((error) => {console.log(error)});
+  }
+
+  nextPage(){
+    if(this.page< Math.floor(this.posts.length/10))
+      this.page++;
+  }
+
+  prevPage(){
+    if(this.page>0)
+      this.page--;
+  }
+
+  setPage(val){
+    this.page=val;
   }
 
   switchText(value){

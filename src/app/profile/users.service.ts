@@ -3,16 +3,22 @@ import { Observable } from 'rxjs/Observable'
 import { Http, Response,RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
-import {Post} from "./posts.entity";
+import {Users} from "./users.entity";
+import {HttpParams} from "@angular/common/http";
+import { Client, SearchResponse } from "elasticsearch";
 
 
-import {SearchService} from "../search.service"
 @Injectable()
-export class PostsService {
+export class UsersService {
 
-  constructor(protected http: Http,protected es:SearchService) {}
 
-  getFormData(url): Observable<Post[]> {
+  constructor(protected http: Http) { }
+
+
+
+  getFormData(user: string): Observable<Users[]> {
+
+    var url="http://localhost:9200/users/_search?pretty=true&q=user:"+user;
 
     return this.http.get(url)
       .map(this.extractData)
@@ -23,7 +29,7 @@ export class PostsService {
 
   private extractData(res: Response) {
     let body = res.json();
-    return body.hits.hits || { };
+    return body.hits.hits[0]["_source"] || { };
   }
 
   private handleError (error: Response | any) {
@@ -38,5 +44,4 @@ export class PostsService {
     console.error(errMsg);
     return Observable.throw(errMsg);
   }
-
 }

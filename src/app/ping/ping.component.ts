@@ -3,6 +3,7 @@ import { AuthHttp } from 'angular2-jwt';
 import { Http } from '@angular/http';
 import { AuthService } from './../auth/auth.service';
 import 'rxjs/add/operator/map';
+import {SearchService} from "../search.service";
 
 @Component({
   selector: 'app-ping',
@@ -14,7 +15,7 @@ export class PingComponent implements OnInit {
   API_URL = 'http://localhost:3001/api';
   message: string;
 
-  constructor(public auth: AuthService, public http: Http, public authHttp: AuthHttp) {}
+  constructor(public auth: AuthService, public http: Http, public authHttp: AuthHttp,public es:SearchService) {}
 
   ngOnInit() {
   }
@@ -27,7 +28,10 @@ export class PingComponent implements OnInit {
         data => this.message = data.message,
         error => this.message = error
       );
+
   }
+
+
 
   public securedPing(): void {
     this.message = '';

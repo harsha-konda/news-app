@@ -1,5 +1,17 @@
-<div class="container-fluid col-sm-10">
-  <div class="card text-center" *ngFor="let post of posts">
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" (click)="prevPage()">Previous</a></li>
+
+      <li class="page-item "  *ngFor="let num of maxPages" [ngClass]="{'active': num == this.page}">
+        <a class="page-link " (click)="setPage(num)">{{num}}</a>
+      </li>
+      <li class="page-item"><a class="page-link" (click)="nextPage()">Next</a></li>
+    </ul>
+  </nav>
+
+
+  <div class="card text-center" style="margin: 1.5% 0%" *ngFor="let post of posts?.slice(this.page*10,this.page*10+10)">
     <div class="card-header"><h3>{{post['_source'].title}}</h3></div>
 
     <div class="row">
@@ -9,9 +21,8 @@
           <p class="text-justify lead" style="padding: 2%" *ngIf="post.displayText">{{post['_source'].text}}</p>
 
           <button href="#" class="btn btn-primary " (click)="switchText(post)">Read More</button>
-          <button href="#" class="btn btn-primary " (click)="switchComment(post)">Comment</button>
-
-          <button class="btn fa fa-heart fa-3"  style="color: red" aria-hidden="true" (click)="incrementUpvotes(post)">   {{post['_source'].upvotes}}</button>
+          <button href="#" class="btn btn-primary " (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment</button>
+          <button class="btn fa fa-heart fa-3"  style="color: red" aria-hidden="true" (click)="incrementUpvotes(post)" *ngIf="auth.isAuthenticated()">   {{post['_source'].upvotes}}</button>
 
         </div>
       </div>
@@ -26,6 +37,16 @@
     <div class="card-footer text-muted" *ngIf="post.displayComment">
       <app-comment></app-comment>
     </div>
-
   </div>
-</div>
+
+  <br>
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item"><a class="page-link" (click)="prevPage()">Previous</a></li>
+
+      <li class="page-item "  *ngFor="let num of maxPages" [ngClass]="{'active': num == this.page}">
+        <a class="page-link " (click)="setPage(num)">{{num}}</a>
+      </li>
+      <li class="page-item"><a class="page-link" (click)="nextPage()">Next</a></li>
+    </ul>
+  </nav>

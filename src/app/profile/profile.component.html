@@ -1,15 +1,35 @@
-<div class="panel panel-default profile-area">
-  <div class="panel-heading"><h3>Profile</h3></div>
-  <div class="panel-body">
-    <img src="{{profile?.picture}}" class="avatar" alt="avatar">
-    <div>
-      <label><i class="glyphicon glyphicon-user"></i> Nickname</label>
-      <h3 class="nickname">{{ profile?.nickname }}</h3>
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="card">
+        <img class="card-img-top" src="{{profile?.picture}}" alt="Card image cap">
+        <div class="card-body">
+          <h4 class="card-title">{{profile?.nickname}}</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item active">Subscriptions</li>
+          <li class="list-group-item" *ngFor="let sub of profileData?.subscription">{{sub.replace("http://","")}}</li>
+        </ul>
+
+        <button class="btn btn-primary" (click)="showFullData=!showFullData">Show Full Profile</button>
+        <pre class="full-profile" *ngIf="showFullData">{{ profile | json }}</pre>
+
+
+
+      </div>
     </div>
-    <div>
-      <label><i class="glyphicon glyphicon-envelope"></i> Email</label>
-      <h3 class="email">{{ profile?.email }}</h3>
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="list-group">
+            <a href="#" class="list-group-item active">Comments</a>
+            <a href="#" class="list-group-item list-group-item-action" *ngFor="let comment of profileData?.comment">
+              {{comment}}
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
-    <pre class="full-profile">{{ profile | json }}</pre>
   </div>
 </div>
