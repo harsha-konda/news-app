@@ -1,67 +1,113 @@
 from flask import Flask, request
 import json
 import newspaper
+from newspaper import news_pool
+
 from elasticsearch import Elasticsearch
 
 from datetime import datetime
 
 app = Flask(__name__, static_url_path='')
-es = Elasticsearch()
 
 elasticeEndPoint="http://localhost:9200/news"
 
-@app.route("/generatePaper", methods=['GET'])
-def handle1():
-    if request.method == 'GET':
 
-        url=request.args['url']
-        print(url)
-        paper=newspaper.build(url,memoize_articles=False)
+def insertDocs(newsPaper,url,download):
 
-
-        articles=[]
-        i=0
-        for article in paper.articles:
-
-            article.download()
-            article.parse()
-            article.nlp()
-            articles+=[article]
-            i+=1
+    es=Elasticsearch()
+    i=0
+    for article in newsPaper.articles:
+        try:
             if i>100:
                 break
 
+            if download:
+                article.download()
+            article.parse()
+            article.nlp()
+            i += 1
+
             es.index(index='news', doc_type='post', body={
-                             "text":article.text,
-                             "keywords":article.keywords,
-                             "authors":article.authors,
-                             "summary":article.summary,
-                             "image":article.top_image,
-                             "link":url,
-                             "upvotes":0,
-                             "timestamp":datetime.now(),
-                             "comments":[]
-                    })
+                "title": article.title,
+                "text": article.text,
+                "keywords": article.keywords,
+                "authors": article.authors,
+                "summary": article.summary,
+                "image": article.top_image,
+                "link": url,
+                "upvotes": 0,
+                "timestamp": str(datetime.now()),
+                "comments": [],
+                "displayText": False,
+                "displayComment": False,
+            })
+
+        except:
+            print("===============================EXCPETION===============================")
+            continue
 
 
 
+@app.route("/loadTrending", methods=['GET'])
+def loadTrending():
+    if request.method == 'GET':
+        popularTags = newspaper.popular_urls()
+
+        print("===============================buiding===============================")
+
+
+        for url in popularTags:
+            print("===============================buiding===============================",url)
+            paper=newspaper.build(url,memoize_articles=False)
+            insertDocs(paper,url,True)
+
+
+            # popularNews+=[newspaper.build(url,memoize_articles=False)]
+
+        # print("===============================built popular news===============================")
+        # news_pool.set(popularNews,threads_per_source=4)
+        # news_pool.join()
+
+        # print("===============================done downloading===============================")
+
+        # for i,newsPaper in enumerate(popularNews):
+        #     print("===============================inserting===============================")
+        #     insertDocs(newsPaper,popularTags[i],False)
+
+        return json.dumps({"status":"success"})
+
+@app.route("/generatePaper", methods=['GET'])
+def generatePaper():
+    if request.method == 'GET':
+        url=request.args['url']
+        paper=newspaper.build(url,memoize_articles=False)
+        insertDocs(paper,url,True)
         return json.dumps({"news":1})
 
 
 @app.route("/dropIndex",methods=['GET'])
-def handle2():
+def dropIndex():
     if request.method=='GET':
+        es=Elasticsearch()
         index=request.args['index']
         es.indices.delete(index=index, ignore=[400, 404])
         return json.dumps({"success":1})
 
 
 @app.route("/createIndex", methods=['GET'])
-def handle3():
+def createIndex():
     if request.method == 'GET':
+        es=Elasticsearch()
         index = request.args['index']
         es.indices.create(index=index, ignore=[400, 404])
         return json.dumps({"success": 1})
+
+
+@app.route("/listTrendingTopics", methods=['GET'])
+def trndingTopics():
+    if request.method == 'GET':
+        popularTags = newspaper.popular_urls()
+        return json.dumps(popularTags)
 
 
 if __name__ == '__main__':

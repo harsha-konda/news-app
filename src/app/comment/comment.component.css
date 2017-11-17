@@ -30,6 +30,9 @@ body {
  * Lista de Comentarios
  =======================*/
 
+.btn{
+  margin-top:0.1em;
+}
 
 .card-header{
   background: #faffff;
@@ -41,7 +44,7 @@ body {
   background: #eaf2ff;
 }
 .comments-container {
-  margin: 60px auto 15px;
+  /*margin: 60px auto 15px;*/
   width: 790px;
 }
 

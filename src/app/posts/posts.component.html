@@ -1,0 +1,31 @@
+<div class="container-fluid col-sm-10">
+  <div class="card text-center" *ngFor="let post of posts">
+    <div class="card-header"><h3>{{post['_source'].title}}</h3></div>
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card-block">
+          <p class="text-justify lead" style="padding: 2%" *ngIf="!post.displayText">{{post['_source'].summary}}</p>
+          <p class="text-justify lead" style="padding: 2%" *ngIf="post.displayText">{{post['_source'].text}}</p>
+
+          <button href="#" class="btn btn-primary " (click)="switchText(post)">Read More</button>
+          <button href="#" class="btn btn-primary " (click)="switchComment(post)">Comment</button>
+
+          <button class="btn fa fa-heart fa-3"  style="color: red" aria-hidden="true" (click)="incrementUpvotes(post)">   {{post['_source'].upvotes}}</button>
+
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-img-bottom">
+          <img src="{{post['_source'].image}}" style="width: 100%" class="rounded float-right" alt="...">
+
+        </div>
+      </div>
+    </div>
+
+    <div class="card-footer text-muted" *ngIf="post.displayComment">
+      <app-comment></app-comment>
+    </div>
+
+  </div>
+</div>

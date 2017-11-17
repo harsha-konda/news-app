@@ -19,8 +19,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { AuthGuardService } from './auth/auth-guard.service';
 import { ScopeGuardService } from './auth/scope-guard.service';
 import { CommentComponent } from './comment/comment.component';
+import { PostsComponent } from './posts/posts.component';
 
-
+import {PostsService} from './posts/posts.service';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -37,7 +38,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     ProfileComponent,
     AdminComponent,
     CallbackComponent,
-    CommentComponent
+    CommentComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule,
@@ -49,6 +51,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     AuthService,
     AuthGuardService,
     ScopeGuardService,
+    PostsService,
     {
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
