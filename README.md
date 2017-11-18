@@ -22,7 +22,109 @@ docker kill $(docker ps -q)
 docker run -it news-app /bin/bash
 ```
 
-### logs
+--
+### elastic search
+
 ```
-docker logs $(docker ps -q)
+
+PUT /customer
+PUT /customer/doc/1
+{
+  "name": "John Doe"
+}
+GET /customer/doc/1
+DELETE /customer
+
+<REST Verb> /<Index>/<Type>/<ID>
+```
+
+### Id is optional
+```
+POST /customer/doc?pretty
+{
+  "name": "Jane Doe"
+}
+COPY AS CURLVIEW IN CONSOLE
+```
+
+### update docs
+```
+POST /customer/doc/1/_update?pretty
+{
+  "doc": { "name": "Jane Doe" }
+}
+```
+
+### increment an attribute
+```
+POST /customer/doc/1/_update?pretty
+{
+  "script" : "ctx._source.age += 5"
+}
+```
+
+### deleting a document
+```
+DELETE /customer/doc/2?pretty
+```
+
+### bulk post
+```
+POST /customer/doc/_bulk?pretty
+{"index":{"_id":"1"}}
+{"name": "John Doe" }
+{"index":{"_id":"2"}}
+{"name": "Jane Doe" }
+```
+
+
+### post from file
+```
+curl -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/account/_bulk?pretty&refresh' --data-binary "@accounts.json"
+curl 'localhost:9200/_cat/indices?v'
+```
+
+### querying for documents
+```
+GET /bank/_search?q=*&sort=account_number:asc&pretty
+GET /bank/_search
+{
+  "query": { "match_all": {} },
+  "sort": { "balance": { "order": "desc" } },
+  "from": 10,"to":20,
+  "_source": ["account_number", "balance"]
+  "query": { "match": { "account_number": 20 } }
+  "query": { "match": { "address": "mill lane" } }
+  "query": { "match_phrase": { "address": "mill lane" } }
+
+  "size": 10
+}
+```
+
+### bool query
+- must - &&
+- should - ||
+- must_not - !
+
+```
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "address": "mill" } },
+        { "match": { "address": "lane" } }
+      ]
+    },
+    "filter": {
+        "range": {
+          "balance": {
+            "gte": 20000,
+            "lte": 30000
+          }
+        }
+      }
+  	 }
+  }
+}
 ```
