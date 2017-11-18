@@ -1,5 +1,7 @@
 import {Component, NgModule} from '@angular/core';
 import { AuthService } from './auth/auth.service';
+import {UsersService} from "./profile/users.service";
+import {Users} from "./profile/users.entity";
 
 
 
@@ -11,20 +13,14 @@ import { AuthService } from './auth/auth.service';
 
 export class AppComponent {
 
-  constructor(public auth: AuthService) {
+  user:Users;
+  user_auth0;
+  constructor(public auth: AuthService,public us:UsersService) {
     // Comment out this method call if using
     // hash-based routing
     auth.handleAuthentication();
-
-
-    // Uncomment this method call if using
-    // hash-based routing
-    // auth.handleAuthenticationWithHash();
   }
-  foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
+
+
 
 }

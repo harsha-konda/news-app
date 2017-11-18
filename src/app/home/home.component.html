@@ -1,23 +1,20 @@
-<div *ngIf="auth.isAuthenticated()">
-    <span *ngIf="auth.userHasScopes(['write:messages'])">
-      <a routerLink="/admin">admin area</a>.
-    </span>
+<div class="container-fluid col-sm-10" style="margin-top: 4%" *ngIf="auth.isAuthenticated()">
 
 
-  <div class="container-fluid col-sm-10">
-
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs sticky-top">
       <li class="nav-item "
           *ngFor="let sub of formattedSubs;let i = index;">
         <a class="nav-link " [ngClass]="{'active': i == cur}" (click)="switchCur(i)" >{{sub}}</a>
       </li>
+
+
     </ul>
     <app-posts [topic]="subs[cur]" style="padding: 1%;"></app-posts>
-  </div>
-
-
 </div>
+
 <div *ngIf="!auth.isAuthenticated()" >
+
+
   <div class="jumbotron" style="background: url('https://s3.amazonaws.com/hkonda-code/Ocean-Sky-Resort-Awesome-Background.jpg');">
     <h1 class="display-3 text-white">Hello!</h1>
     <p class="lead text-white">A Personalized News Feed for those Short on Time!</p>

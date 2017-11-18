@@ -21,10 +21,14 @@ import { ScopeGuardService } from './auth/scope-guard.service';
 import { CommentComponent } from './comment/comment.component';
 import { PostsComponent } from './posts/posts.component';
 
-import {PostsService} from './posts/posts.service';
+// import {PostsService} from './posts/posts.service';
 import { TopicsComponent } from './topics/topics.component';
 import {UsersService} from './profile/users.service';
 import {SearchService} from "./search.service"
+import {MomentModule} from "angular2-moment";
+
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   return new AuthHttp(new AuthConfig({
@@ -50,12 +54,15 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),
+    MomentModule
+    // BrowserAnimationsModule,
+    // NgxChartsModule
   ],
   providers: [
     AuthService,
     AuthGuardService,
     ScopeGuardService,
-    PostsService,
+    // PostsService,
     UsersService,
     SearchService,
     {
@@ -67,3 +74,4 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

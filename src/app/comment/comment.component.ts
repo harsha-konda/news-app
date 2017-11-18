@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, OnChanges, SimpleChanges} from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {Comment} from "./comment.entity"
+
+import {NgForm} from '@angular/forms';
+
 @Component({
   selector: 'app-comment',
   templateUrl: './comment.component.html',
@@ -9,11 +13,50 @@ export class CommentComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
+  @Input() uid="harsha";
+  @Input() pid="dkahsdjkha";
+  @Input() comment
+
+
+  @Output() notify: EventEmitter<Comment> = new EventEmitter<Comment>();
+
+
+
+  // ngOnChanges(changes: SimpleChanges){
+  //   this.comment=changes.comment;
+  // }
+  ngOnInit(){
+
   }
 
-  curDate=new Date().getTime()
+  onSubmit(f: NgForm){
+    this.showBox=false;
+    var newComment={
+      text:f.value.text,
+      uid:this.uid,
+      timestamp:Date.now(),
+      pid:this.comment?this.comment.pid:this.pid,
+      replies:[]
+    }
 
+    if(this.comment)
+      this.comment.replies.push(newComment);
+    else
+      this.comment=newComment;
+
+    this.notify.emit(this.comment);
+
+  }
+
+  showBox=false;
+  ocBox(){
+    this.showBox=!this.showBox;
+  }
+
+  onNotify(event:Comment){
+    this.comment.result.push(event);
+    this.notify.emit(this.comment);
+  }
 
   curUser="harsha"
   data={

@@ -10,13 +10,24 @@ async = require("async");
 var webshot = require('webshot');
 var path=require('path');
 require('dotenv').config();
+var es=require('elasticsearch');
+var bodyParser = require('body-parser')
+var crypto = require('crypto');
+var homepage = require("./server/homepage.js");
+var topics=require("./server/topics.js");
 
+var client = new es.Client({
+  host: 'localhost:9200',
+  log: 'trace'
+});
 
-var homepage = require("./server/homepage.js")
 
 if (!process.env.AUTH0_DOMAIN || !process.env.AUTH0_AUDIENCE) {
   throw 'Make sure you have AUTH0_DOMAIN, and AUTH0_AUDIENCE in your .env file'
 }
+
+app.use(bodyParser.json())
+
 
 app.use(cors());
 
@@ -83,6 +94,75 @@ app.get('/trends/toptopics',function (req, res) {
     res.json({"succes":1});
 
 });
+
+app.get('/api/listsubs',function(req,res){
+  res.json({topics:topics});
+});
+
+
+
+app.get('/es/:obj/search/:text',function(req,res){
+  var obj=req.params.obj;
+  var text=req.params.text;
+
+  client.search({
+    index:obj,
+    q:text
+  }).then(function(body){
+    res.json(body);
+  },function(error){
+    console.log(error);
+  })
+
+
+});
+
+app.post('/es/:obj/:type/create',function(req,res){
+  var body=req.body;
+  var obj=req.params.obj;
+  var type=req.params.type;
+
+  var key=req.body.user?req.body.user:req.body.text;
+
+  client.create({
+    index: obj,
+    type: type,
+    id:crypto.createHash('md5').update(key).digest('hex'),
+    body: body,
+
+  }, function (error, response) {
+    var prompt="success";
+    if(error)
+      prompt="faliure"
+    res.json({status:prompt})
+  });
+});
+
+app.post('/es/:obj/:type/update',function(req,res){
+  var body=req.body;
+  var obj=req.params.obj;
+  var type=req.params.type;
+
+  body=(obj=='news')?body["_source"]:body;
+  var key=req.body.user?crypto.createHash('md5').update(req.body.user).digest('hex'):req.body._id;
+
+  client.update({
+    index: obj,
+    type: type,
+    id:key,
+    body: {doc:body},
+
+  }, function (error, response) {
+    var prompt="success";
+    if(error)
+      prompt="faliure"
+      console.log(error);
+    res.json({status:prompt})
+  });
+});
+
+
+
 
 app.get('/api/public', function (req, res) {
   res.json({message: "bitch please!"});

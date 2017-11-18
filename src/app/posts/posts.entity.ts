@@ -1,4 +1,5 @@
 export class Post {
+  "_id":any;
   "text":string;
   "keywords":string[];
   "authors":string[];

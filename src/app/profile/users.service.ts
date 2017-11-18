@@ -16,15 +16,42 @@ export class UsersService {
 
 
 
-  getFormData(user: string): Observable<Users[]> {
-
+  getFormData(user: string): Observable<Users> {
     var url="http://localhost:9200/users/_search?pretty=true&q=user:"+user;
-
     return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
+
+  updateUser(body : Users): Observable<Users[]>{
+    var url="http://localhost:3001/es/users/1/update"
+
+    return this.http
+      .post(url,body)
+      .map(a=>1)
+      .catch(this.handleError);
+  }
+
+  createUser(user): Observable<any>{
+
+    var body=user;
+
+    var url="http://localhost:3001/es/users/1/create";
+
+    return this.http.post(url,user)
+      .map(a=> 1)
+      .catch(this.handleError);
+  }
+
+  getSubscriptions():Observable<any>{
+    var url="http://localhost:3001/api/listsubs";
+
+    return this.http
+      .get(url)
+      .map(x=>x.json().topics)
+      .catch(this.handleError);
+  }
 
 
   private extractData(res: Response) {

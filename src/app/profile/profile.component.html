@@ -1,24 +1,87 @@
-<br>
-<div class="container-fluid">
+
+<div class="container-fluid" style="margin-top: 4%">
   <div class="row">
+
     <div class="col-sm-3">
       <div class="card">
-        <img class="card-img-top" src="{{profile?.picture}}" alt="Card image cap">
+        <img class="card-img-top"
+             src="{{profile?.picture}}"
+             alt="Card image cap">
         <div class="card-body">
           <h4 class="card-title">{{profile?.nickname}}</h4>
         </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item active">Subscriptions</li>
-          <li class="list-group-item" *ngFor="let sub of profileData?.subscription">{{sub.replace("http://","")}}</li>
+          <li class="list-group-item"
+              *ngFor="let sub of profileData?.subscription">
+            {{sub.replace("http://","")}}
+          </li>
+
+          <li class="list-group-item"
+              *ngIf="profileData?.subscription.length==0">
+            No Subscriptions
+          </li>
+
+          <li class="list-group-item ">
+            <button class="btn btn-info"
+                    data-toggle="modal"
+                    data-target=".bd-example-modal-lg">
+              Edit Subscriptions
+            </button>
+          </li>
+
         </ul>
 
-        <button class="btn btn-primary" (click)="showFullData=!showFullData">Show Full Profile</button>
-        <pre class="full-profile" *ngIf="showFullData">{{ profile | json }}</pre>
-
-
-
+        <button class="btn btn-primary"
+                (click)="showFullData=!showFullData">
+          Show Full Profile
+        </button>
+        <pre class="full-profile"
+             *ngIf="showFullData">{{ profile | json }}</pre>
       </div>
     </div>
+
+    <div class="modal fade bd-example-modal-lg"
+         tabindex="-1" role="dialog"
+         aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item active">Available Topics</li>
+            <li class="list-group-item"
+                *ngFor="let topic of topics;let i=index;"
+                [ngClass]="{'active':topic.sub}" (click)="handleSubscrption(i)">{{topic.link}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!--<div class="col-sm-6">-->
+      <!--<div class="card">-->
+        <!--<div class="card-block">-->
+          <!--<div class="list-group">-->
+            <!--<a href="#" class="list-group-item active">Comments</a>-->
+            <!--<a href="#" class="list-group-item list-group-item-action">-->
+
+          <!--<ngx-charts-pie-chart-->
+            <!--[view]="view"-->
+            <!--[scheme]="colorScheme"-->
+            <!--[results]="single"-->
+            <!--[legend]="showLegend"-->
+            <!--[explodeSlices]="explodeSlices"-->
+            <!--[labels]="showLabels"-->
+            <!--[doughnut]="doughnut"-->
+            <!--[gradient]="gradient"-->
+            <!--(select)="onSelect($event)">-->
+          <!--</ngx-charts-pie-chart>-->
+            <!--</a>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
+    <!--</div>-->
+
     <div class="col-sm-6">
       <div class="card">
         <div class="card-block">
@@ -31,5 +94,22 @@
         </div>
       </div>
     </div>
-  </div>
+
+    <div class="col-sm-6">
+      <div class="card">
+        <div class="card-block">
+          <div class="list-group">
+            <a href="#" class="list-group-item active">Favorited Posts</a>
+            <a href="#" class="list-group-item list-group-item-action" *ngFor="let comment of profileData?.comment">
+              {{comment}}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 </div>
+</div>
+
+
