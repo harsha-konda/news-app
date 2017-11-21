@@ -12,39 +12,54 @@ app = Flask(__name__, static_url_path='')
 elasticeEndPoint="http://localhost:9200/news"
 
 
-def insertDocs(newsPaper,url,download):
+def insertDocs(newsPaper,url,download,file):
 
     es=Elasticsearch()
     i=0
     for article in newsPaper.articles:
-        try:
-            if i>100:
-                break
+        # try:
+        if i>100:
+            break
 
-            if download:
-                article.download()
-            article.parse()
-            article.nlp()
-            i += 1
+        if download:
+            article.download()
+        article.parse()
+        article.nlp()
+        i += 1
 
-            es.index(index='news', doc_type='post', body={
-                "title": article.title,
-                "text": article.text,
-                "keywords": article.keywords,
-                "authors": article.authors,
-                "summary": article.summary,
-                "image": article.top_image,
-                "link": url,
-                "upvotes": 0,
-                "timestamp": str(datetime.now()),
-                "comments": [],
-                "displayText": False,
-                "displayComment": False,
-            })
+        # es.index(index='news', doc_type='post', body={
+        #     "title": article.title,
+        #     "text": article.text,
+        #     "keywords": article.keywords,
+        #     "authors": article.authors,
+        #     "summary": article.summary,
+        #     "image": article.top_image,
+        #     "link": url,
+        #     "upvotes": 0,
+        #     "timestamp": str(datetime.now()),
+        #     "comments": [],
+        #     "displayText": False,
+        #     "displayComment": False,
+        # })
 
-        except:
-            print("===============================EXCPETION===============================")
-            continue
+        file.write(str({
+            "title": article.title,
+            "text": article.text,
+            "keywords": article.keywords,
+            "authors": article.authors,
+            "summary": article.summary,
+            "image": article.top_image,
+            "link": url,
+            "upvotes": 0,
+            "timestamp": str(datetime.now()),
+            "comments": [],
+            "displayText": False,
+            "displayComment": False,
+        }))
+
+        # except:
+        #     print("===============================EXCPETION===============================")
+        #     continue
 
 
 
@@ -55,13 +70,14 @@ def loadTrending():
 
         print("===============================buiding===============================")
 
+        file=open("flask/data","w")
 
-        for url in popularTags:
+        for url in popularTags[0:10]:
             print("===============================buiding===============================",url)
-            paper=newspaper.build(url,memoize_articles=False)
-            insertDocs(paper,url,True)
+            paper=newspaper.build(url)
+            insertDocs(paper,url,True,file=file)
 
-
+        file.close()
             # popularNews+=[newspaper.build(url,memoize_articles=False)]
 
         # print("===============================built popular news===============================")
@@ -81,7 +97,9 @@ def generatePaper():
     if request.method == 'GET':
         url=request.args['url']
         paper=newspaper.build(url,memoize_articles=False)
-        insertDocs(paper,url,True)
+        file=open("flask/data","w")
+
+        insertDocs(paper,url,True,file)
         return json.dumps({"news":1})
 
 

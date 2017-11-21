@@ -18,7 +18,7 @@ var topics=require("./server/topics.js");
 
 var client = new es.Client({
   host: 'localhost:9200',
-  log: 'trace'
+  // log: 'trace'
 });
 
 
@@ -107,6 +107,7 @@ app.get('/es/:obj/search/:text',function(req,res){
 
   client.search({
     index:obj,
+    size:100,
     q:text
   }).then(function(body){
     res.json(body);

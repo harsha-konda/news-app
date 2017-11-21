@@ -102,6 +102,10 @@ curl -H "Content-Type: application/json" -XPOST 'localhost:9200/bank/account/_bu
 curl 'localhost:9200/_cat/indices?v'
 ```
 
+```
+curl -XPUT  -H 'Content-Type: application/x-ndjson' localhost:9200/_bulk --data-binary @/Users/harsha/Google\ Drive/Semester-3/enterpriseWeb/newApp/flask/data1.json
+```
+
 ### querying for documents
 ```
 GET /bank/_search?q=*&sort=account_number:asc&pretty
