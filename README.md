@@ -1,5 +1,23 @@
 ## newsApp
 
+####tasks
+1. Login/Signup +15pts
+   A pair must also provide inline validation
+2. Home Page +5pts<br>
+   A pair must also provide immediate immersion
+3. Submit Content & Read Content +10pts <br>
+   A pair must also provide: Badges, Notifications, and  Dashboard
+4. Search for Content +15pts
+5. Content Feedback +10pts<br>
+   Favorites and Vote to Promote
+6. Better Content +5pts<br>
+   Individuals must provide tagging of terms onto favorites. A pair must provide a natural language interface to search
+7. Suggestions +15pts<br>
+   Everyone will provide suggestions based on history
+Individuals will also provide either related content or recommendations. A pair must provide both related content and recommendations
+ 
+
+### commands
 ```
 npm start
 ```
