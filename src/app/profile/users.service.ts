@@ -35,6 +35,7 @@ export class UsersService {
 
   createUser(user): Observable<any>{
     var body=user;
+    console.log(body);
     var url="http://localhost:3001/es/users/1/create";
     return this.http.post(url,user)
       .map(a=> 1)
@@ -64,7 +65,6 @@ export class UsersService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    console.error(errMsg);
     return Observable.throw(errMsg);
   }
 }

@@ -45,7 +45,6 @@ export class SearchService {
 
   update(post){
     var url='http://localhost:3001/es/news/post/update';
-    console.log(post);
     return this.http.post(url,post)
       .map(x=>1)
       .catch(this.handleError)

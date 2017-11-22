@@ -16,14 +16,16 @@ export class PostsComponent implements OnInit,OnChanges {
   posts;
   es;
   @Input() topic: String="http://www.cnn.com";
-  @Input() uid="harsha";
 
 
   page=0;
   maxPages;
   auth;
 
+  uid;
+
   constructor(auth:AuthService,es:SearchService) {
+    this.uid = "konda.harsha1";
     this.es=es;
     this.auth=auth;
   }
@@ -59,11 +61,21 @@ export class PostsComponent implements OnInit,OnChanges {
 
     this.es
       .update(this.posts[p])
-      .subscribe(data=>console.log(data));
+      .subscribe();
     this.newComment=null;
-
   }
 
+  onUpvoteChange(event:number,p){
+    console.log("happening");
+
+    this.posts[p]['_source']['upvotes']=event;
+    console.log(event);
+    console.log(this.posts[p]);
+    this.es
+      .update(this.posts[p])
+      .subscribe(data=>console.log(data));
+
+  }
 
   setMaxPages(posts){
     var num=Math.ceil(posts.length/10)
@@ -92,7 +104,6 @@ export class PostsComponent implements OnInit,OnChanges {
   }
 
   switchText(value){
-
     value.displayText=!value.displayText
     return value
   }
@@ -107,6 +118,7 @@ export class PostsComponent implements OnInit,OnChanges {
 
     value['_source'].upvotes+=1
   }
+
 
 
 }

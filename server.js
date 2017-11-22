@@ -89,10 +89,8 @@ app.get('/trends/toptopics',function (req, res) {
 
     }
 
-
   });
     res.json({"succes":1});
-
 });
 
 app.get('/api/listsubs',function(req,res){
@@ -114,8 +112,6 @@ app.get('/es/:obj/search/:text',function(req,res){
   },function(error){
     console.log(error);
   })
-
-
 });
 
 app.post('/es/:obj/:type/create',function(req,res){

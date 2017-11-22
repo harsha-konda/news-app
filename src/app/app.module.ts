@@ -35,6 +35,7 @@ import { TopicsComponent } from './topics/topics.component';
 import {UsersService} from './profile/users.service';
 import {SearchService} from "./search.service"
 import {MomentModule} from "angular2-moment";
+import { FavoritesComponent } from './favorites/favorites.component';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import {NgxChartsModule} from '@swimlane/ngx-charts';
@@ -56,7 +57,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     CallbackComponent,
     CommentComponent,
     PostsComponent,
-    TopicsComponent
+    TopicsComponent,
+    FavoritesComponent
   ],
   imports: [
     BrowserModule,
@@ -65,8 +67,6 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     RouterModule.forRoot(ROUTES),
     MomentModule,
     MatButtonModule,MatToolbarModule,MatMenuModule,MatTabsModule,BrowserAnimationsModule,MatCardModule,MatGridListModule
-    // BrowserAnimationsModule,
-    // NgxChartsModule
   ],
   providers: [
     AuthService,

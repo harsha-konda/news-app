@@ -26,7 +26,6 @@ export class ProfileComponent implements OnInit {
 
   showFullData=false;
   ngOnInit() {
-
     if (this.auth.userProfile) {
       this.profile = this.auth.userProfile;
       this.getUserProfile(this.profile);
@@ -66,6 +65,9 @@ export class ProfileComponent implements OnInit {
 
   }
 
+  /**
+   * Get all the topics
+   * */
   getTopics(){
     this.user
       .getSubscriptions()
@@ -76,9 +78,12 @@ export class ProfileComponent implements OnInit {
           data.map(x=>submap.push({link:x,sub:set.has(x)}))
           this.topics=submap;
         }
-      )
+    )
   }
 
+  /**
+   * Dynamically update subcriptions
+   * */
   handleSubscrption(i){
     this.topics[i].sub=!this.topics[i].sub;
     this.profileData.subscription=[]
@@ -90,6 +95,10 @@ export class ProfileComponent implements OnInit {
     this.updateUser(this.profileData);
   }
 
+  /**
+   * gets a user profile
+   * if it doesn't exist it create a new one
+   * */
   getUserProfile(profile){
     if(profile){
       this.user
@@ -97,29 +106,24 @@ export class ProfileComponent implements OnInit {
         .subscribe(
           data=>{
               this.profileData=data;
-              if(!data)
-                this.createUserProfile();
-
               this.getTopics();
-          }
-        )
+          },
+          err => {
+            this.createUserProfile();
+            this.getTopics();
+          },
+      )
     }
   }
 
   updateUser(body){
-    this.user.updateUser(body).subscribe(
-      data=>console.log(data)
-    );
+    this.user.updateUser(body).subscribe();
   }
 
   createUserProfile(){
     this.user
       .createUser(new Users(this.profile.nickname))
-      .subscribe(data=>{
-        console.log("created user");
-      });
+      .subscribe();
   }
-
-
 
 }

@@ -25,7 +25,7 @@
       <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
         <textarea class="form-control" name="text" rows="6" ngModel required></textarea>
         <br>
-        <button mat-raised-button color="primary" class="btn btn-primary">Post</button>
+        <button mat-raised-button color="primary" [disabled]="f.invalid">Post</button>
       </form>
 
     </div>

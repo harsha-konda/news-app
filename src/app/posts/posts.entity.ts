@@ -11,6 +11,4 @@ export class Post {
   "comments":string[];
   "displayText":boolean;
   "displayComment":boolean;
-
-
 }

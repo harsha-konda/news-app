@@ -45,9 +45,12 @@
         <button mat-raised-button color="primary"(click)="switchText(post)">Read More</button>
         <button mat-raised-button color="primary" (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment
         </button>
-        <button class="btn fa fa-heart fa-3" style="color: red" aria-hidden="true" (click)="incrementUpvotes(post)"
-                *ngIf="auth.isAuthenticated()"> {{post['_source'].upvotes}}
-        </button>
+
+        <app-favorites [userid]="uid"
+                       [postId]="post['_id']"
+                       (notify)="onUpvoteChange($event,p)"
+                       [upvotes]="post['_source']['upvotes']"
+        ></app-favorites>
 
       </div>
     </div>
@@ -65,7 +68,6 @@
       <app-comment [pid]="post['_id']"
                    [uid]="uid"
                    [comment]="comment"
-
                    (notify)="onNotify($event,p,i)"
       ></app-comment>
     </div>
