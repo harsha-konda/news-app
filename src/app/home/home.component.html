@@ -1,18 +1,17 @@
-<div class="container-fluid col-sm-10" style="margin-top: 4%" *ngIf="auth.isAuthenticated()">
+
+<mat-card  *ngIf="auth.isAuthenticated()">
 
 
-    <ul class="nav nav-tabs sticky-top">
-      <li class="nav-item "
-          *ngFor="let sub of formattedSubs;let i = index;">
-        <a class="nav-link " [ngClass]="{'active': i == cur}" (click)="switchCur(i)" >{{sub}}</a>
-      </li>
 
+  <mat-tab-group class="demo-tab-group">
+    <mat-tab *ngFor="let sub of formattedSubs;let i = index;" label="{{sub}}">
+        <app-posts [topic]="subs[i]" style="padding: 1%;"></app-posts>
+    </mat-tab>
+  </mat-tab-group>
 
-    </ul>
-    <app-posts [topic]="subs[cur]" style="padding: 1%;"></app-posts>
-</div>
+</mat-card>
 
-<div *ngIf="!auth.isAuthenticated()" >
+<mat-card *ngIf="!auth.isAuthenticated()" >
 
 
   <div class="jumbotron" style="background: url('https://s3.amazonaws.com/hkonda-code/Ocean-Sky-Resort-Awesome-Background.jpg');">
@@ -25,9 +24,8 @@
     </p>
   </div>
 
-  <div class="container-fluid">
-    <app-posts [topic]="" ></app-posts>
-  </div>
 
-</div>
+    <app-posts [topic]="" ></app-posts>
+
+</mat-card>
 

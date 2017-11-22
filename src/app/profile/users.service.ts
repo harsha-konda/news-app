@@ -34,11 +34,8 @@ export class UsersService {
   }
 
   createUser(user): Observable<any>{
-
     var body=user;
-
     var url="http://localhost:3001/es/users/1/create";
-
     return this.http.post(url,user)
       .map(a=> 1)
       .catch(this.handleError);
@@ -46,7 +43,6 @@ export class UsersService {
 
   getSubscriptions():Observable<any>{
     var url="http://localhost:3001/api/listsubs";
-
     return this.http
       .get(url)
       .map(x=>x.json().topics)

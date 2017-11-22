@@ -32,7 +32,7 @@
 </nav>
 
 
-<div class="card text-center" style="margin: 1.5% 0%"
+<mat-card class="card text-center" style="margin: 1.5% 0%"
      *ngFor="let post of posts?.slice(this.page*10,this.page*10+10);let p=index;">
   <div class="card-header"><h3>{{post['_source'].title}}</h3></div>
 
@@ -42,8 +42,8 @@
         <p class="text-justify lead" style="padding: 2%" *ngIf="!post.displayText">{{post['_source'].summary}}</p>
         <p class="text-justify lead" style="padding: 2%" *ngIf="post.displayText">{{post['_source'].text}}</p>
 
-        <button href="#" class="btn btn-primary " (click)="switchText(post)">Read More</button>
-        <button href="#" class="btn btn-primary " (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment
+        <button mat-raised-button color="primary"(click)="switchText(post)">Read More</button>
+        <button mat-raised-button color="primary" (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment
         </button>
         <button class="btn fa fa-heart fa-3" style="color: red" aria-hidden="true" (click)="incrementUpvotes(post)"
                 *ngIf="auth.isAuthenticated()"> {{post['_source'].upvotes}}
@@ -61,8 +61,7 @@
 
   <div class="container-fluid" *ngIf="post.displayComment">
     <div class="card-footer text-muted"
-         *ngFor="let comment of post['_source'].comments;let i=index;"
-    >
+         *ngFor="let comment of post['_source'].comments;let i=index;">
       <app-comment [pid]="post['_id']"
                    [uid]="uid"
                    [comment]="comment"
@@ -81,7 +80,7 @@
       </app-comment>
     </div>
   </div>
-</div>
+</mat-card>
 
 <br>
 <nav aria-label="Page navigation example">

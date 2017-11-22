@@ -13,7 +13,6 @@ export class HomeComponent implements OnInit {
 
   constructor(public auth: AuthService,public user:UsersService,public es:SearchService) {}
 
-  cur=0
   formattedSubs;
   profileData;
   profile;
@@ -38,10 +37,7 @@ export class HomeComponent implements OnInit {
   }
 
 
-  switchCur(cur){
-    console.log(cur);
-    this.cur=cur;
-  }
+
 
   getUserData(user){
     this.user.getFormData(user).subscribe(data=>{

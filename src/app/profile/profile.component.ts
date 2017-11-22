@@ -3,6 +3,7 @@ import { AuthService } from './../auth/auth.service';
 import {UsersService} from "./users.service";
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {single, multi} from './data';
+import {Users} from "./users.entity";
 
 
 @Component({
@@ -96,8 +97,6 @@ export class ProfileComponent implements OnInit {
         .subscribe(
           data=>{
               this.profileData=data;
-
-              console.log({profile:this.profileData});
               if(!data)
                 this.createUserProfile();
 
@@ -115,7 +114,7 @@ export class ProfileComponent implements OnInit {
 
   createUserProfile(){
     this.user
-      .createUser({user:this.profile.nickname,subscription:[]})
+      .createUser(new Users(this.profile.nickname))
       .subscribe(data=>{
         console.log("created user");
       });

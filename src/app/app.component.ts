@@ -7,7 +7,9 @@ import {Users} from "./profile/users.entity";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+
 })
 
 

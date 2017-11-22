@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { RouterModule } from '@angular/router';
+import 'hammerjs';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -20,6 +21,14 @@ import { AuthGuardService } from './auth/auth-guard.service';
 import { ScopeGuardService } from './auth/scope-guard.service';
 import { CommentComponent } from './comment/comment.component';
 import { PostsComponent } from './posts/posts.component';
+
+import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatMenuModule} from '@angular/material/menu';
+import {MatTabsModule} from '@angular/material/tabs';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations"
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 // import {PostsService} from './posts/posts.service';
 import { TopicsComponent } from './topics/topics.component';
@@ -54,7 +63,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES),
-    MomentModule
+    MomentModule,
+    MatButtonModule,MatToolbarModule,MatMenuModule,MatTabsModule,BrowserAnimationsModule,MatCardModule,MatGridListModule
     // BrowserAnimationsModule,
     // NgxChartsModule
   ],
