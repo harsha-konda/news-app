@@ -110,7 +110,6 @@ app.get('/es/:obj/search/:text',function(req,res){
   }).then(function(body){
     res.json(body);
   },function(error){
-    console.log(error);
   })
 });
 

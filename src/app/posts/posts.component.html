@@ -38,14 +38,15 @@
 
   <div class="row">
 
-    <div class="col-md-1">
-      <app-favorites [userid]="uid"
+    <div class="col-md-1" *ngIf="auth.isAuthenticated()">
+      <app-favorites
+                     [userid]="uid"
                      [postId]="post['_id']"
                      (notify)="onUpvoteChange($event,p)"
                      [upvotes]="post['_source']['upvotes']"
       ></app-favorites>
     </div>
-    <div class="col-md-7">
+    <div class="col-md-7" [ngClass]="{'col-md-8':!auth.isAuthenticated()}">
       <div class="card-block">
         <p class="text-justify lead" style="padding: 2%" *ngIf="!post.displayText">{{post['_source'].summary}}</p>
         <p class="text-justify lead" style="padding: 2%" *ngIf="post.displayText">{{post['_source'].text}}</p>
