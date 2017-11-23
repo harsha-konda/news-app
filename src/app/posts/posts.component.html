@@ -37,7 +37,15 @@
   <div class="card-header"><h3>{{post['_source'].title}}</h3></div>
 
   <div class="row">
-    <div class="col-md-8">
+
+    <div class="col-md-1">
+      <app-favorites [userid]="uid"
+                     [postId]="post['_id']"
+                     (notify)="onUpvoteChange($event,p)"
+                     [upvotes]="post['_source']['upvotes']"
+      ></app-favorites>
+    </div>
+    <div class="col-md-7">
       <div class="card-block">
         <p class="text-justify lead" style="padding: 2%" *ngIf="!post.displayText">{{post['_source'].summary}}</p>
         <p class="text-justify lead" style="padding: 2%" *ngIf="post.displayText">{{post['_source'].text}}</p>
@@ -45,13 +53,6 @@
         <button mat-raised-button color="primary"(click)="switchText(post)">Read More</button>
         <button mat-raised-button color="primary" (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment
         </button>
-
-        <app-favorites [userid]="uid"
-                       [postId]="post['_id']"
-                       (notify)="onUpvoteChange($event,p)"
-                       [upvotes]="post['_source']['upvotes']"
-        ></app-favorites>
-
       </div>
     </div>
     <div class="col-md-4">

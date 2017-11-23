@@ -5,7 +5,7 @@
    A pair must also provide inline validation
 2. ~~Home Page +5pts<br>~~
    A pair must also provide immediate immersion
-3. Submit Content & Read Content +10pts <br>
+3. ~~Submit Content & Read Content~~ +10pts <br>
    A pair must also provide: Badges, Notifications, and  Dashboard
 4. ~~Search for Content +15pts~~
 5. Content Feedback +10pts<br>

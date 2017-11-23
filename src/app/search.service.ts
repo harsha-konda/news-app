@@ -28,7 +28,7 @@ export class SearchService {
       return this._client.search({
         index: index,
         q: `${key}:${value}`,
-        "size" : 1000,
+        "size" : 100,
       })
     } else {
       return Promise.resolve({})
