@@ -18,7 +18,7 @@ export class PostsComponent implements OnInit,OnChanges {
   @Input() topic: String="http://www.cnn.com";
 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
-  @Output() output: EventEmitter<string>=new EventEmitter<string>();
+  @Output() output: EventEmitter<Comment>=new EventEmitter<Comment>();
 
   page=0;
   maxPages;

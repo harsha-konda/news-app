@@ -45,13 +45,14 @@
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item active">Available Topics</li>
-            <li class="list-group-item"
-                *ngFor="let topic of topics;let i=index;"
-                [ngClass]="{'active':topic.sub}" (click)="handleSubscrption(i)">{{topic.link}}
-            </li>
-          </ul>
+
+          <mat-selection-list>
+            <mat-list-item style="background: antiquewhite">Available Topics</mat-list-item>
+            <mat-list-option *ngFor="let topic of topics;let i=index;"
+                             selected="{{topic.sub}}"
+                           (click)="handleSubscrption(i)">{{topic.link}}
+            </mat-list-option>
+          </mat-selection-list>
         </div>
       </div>
     </div>

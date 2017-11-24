@@ -40,6 +40,7 @@ import { TagComponent } from './tag/tag.component';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
+import {MatListModule} from '@angular/material/list';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import {NgxChartsModule} from '@swimlane/ngx-charts';
@@ -71,7 +72,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     HttpModule,
     RouterModule.forRoot(ROUTES),
     MomentModule,
-    MatButtonModule,MatToolbarModule,MatMenuModule,MatTabsModule,BrowserAnimationsModule,MatCardModule,MatChipsModule,MatGridListModule,MatFormFieldModule,MatIconModule
+    MatButtonModule,MatToolbarModule,MatMenuModule,MatTabsModule,BrowserAnimationsModule,MatCardModule,MatChipsModule,MatGridListModule,MatFormFieldModule,MatIconModule,MatListModule
   ],
   providers: [
     AuthService,
