@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  ngOnCha
 
   view: any[] = [700, 400];
 
@@ -61,9 +60,6 @@ export class ProfileComponent implements OnInit {
   }
 
 
-  barChart(){
-
-  }
 
   /**
    * Get all the topics
@@ -100,20 +96,22 @@ export class ProfileComponent implements OnInit {
    * if it doesn't exist it create a new one
    * */
   getUserProfile(profile){
-    if(profile){
       this.user
         .getFormData(this.profile.nickname)
         .subscribe(
           data=>{
               this.profileData=data;
-              this.getTopics();
+            console.log(data);
+
+            this.getTopics();
           },
           err => {
+            console.log("fuck");
+
             this.createUserProfile();
             this.getTopics();
           },
       )
-    }
   }
 
   updateUser(body){

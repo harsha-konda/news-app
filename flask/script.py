@@ -3,6 +3,8 @@ from datetime import datetime
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
+import random
+
 popularTags = newspaper.popular_urls()
 file = open("flask/data1.json", "w")
 import json
@@ -21,21 +23,6 @@ def insertDocs(newsPaper,url,download,file):
         article.nlp()
         i += 1
 
-        # es.index(index='news', doc_type='post', body={
-        #     "title": article.title,
-        #     "text": article.text,
-        #     "keywords": article.keywords,
-        #     "authors": article.authors,
-        #     "summary": article.summary,
-        #     "image": article.top_image,
-        #     "link": url,
-        #     "upvotes": 0,
-        #     "timestamp": str(datetime.now()),
-        #     "comments": [],
-        #     "displayText": False,
-        #     "displayComment": False,
-        # })
-
         file.write(json.dumps({"index": {"_index": "news", "_type": "post"}})+"\n")
 
         file.write(json.dumps({
@@ -46,7 +33,7 @@ def insertDocs(newsPaper,url,download,file):
             "summary": article.summary,
             "image": article.top_image,
             "link": url,
-            "upvotes": 0,
+            "upvotes": random.randint(0, 5000),
             "timestamp": str(datetime.now()),
             "comments": [],
             "displayText": False,

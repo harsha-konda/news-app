@@ -53,7 +53,9 @@ export class HomeComponent implements OnInit {
     }
   }
 
-
+  addComment(event){
+    this.User.comments.push(event);
+  }
 
   update(event){
     console.log({home:event});
@@ -61,6 +63,9 @@ export class HomeComponent implements OnInit {
   }
 
   esUpdateUser(){
+    if(!this.User)
+      return;
+
     delete this.User.subscription;
     this.user.updateUser(this.User).subscribe();
   }

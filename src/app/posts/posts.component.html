@@ -27,8 +27,6 @@
   </div>
   </div>
   </div>
-
-
 </nav>
 
 
@@ -51,15 +49,14 @@
         <p class="text-justify lead" style="padding: 2%" *ngIf="!post.displayText">{{post['_source'].summary}}</p>
         <p class="text-justify lead" style="padding: 2%" *ngIf="post.displayText">{{post['_source'].text}}</p>
 
+        <app-tag></app-tag>
         <button mat-raised-button color="primary"(click)="switchText(post)">Read More</button>
-        <button mat-raised-button color="primary" (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment
-        </button>
+        <button mat-raised-button color="primary" (click)="switchComment(post)" *ngIf="auth.isAuthenticated()">Comment</button>
       </div>
     </div>
     <div class="col-md-4">
       <div class="card-img-bottom">
         <img src="{{post['_source'].image}}" style="width: 100%" class="rounded float-right" alt="...">
-
       </div>
     </div>
   </div>

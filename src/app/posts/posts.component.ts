@@ -18,6 +18,7 @@ export class PostsComponent implements OnInit,OnChanges {
   @Input() topic: String="http://www.cnn.com";
 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+  @Output() output: EventEmitter<string>=new EventEmitter<string>();
 
   page=0;
   maxPages;
@@ -60,6 +61,8 @@ export class PostsComponent implements OnInit,OnChanges {
     }else
       this.posts[p]['_source'].comments[c]=comment;
 
+    this.output.emit(comment)
+
     this.es
       .update(this.posts[p])
       .subscribe();
@@ -74,7 +77,6 @@ export class PostsComponent implements OnInit,OnChanges {
 
     this.posts[p]['_source']['upvotes']=upvotes;
 
-    console.log({postUpvotes:this.posts[p]['_source']['upvotes']});
 
     this.notify
       .emit(data[0]+":"+data[1]);

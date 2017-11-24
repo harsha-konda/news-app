@@ -9,7 +9,10 @@
         <button mat-button routerLink="/profile" *ngIf="auth.isAuthenticated()">Profile</button>
         <button mat-button *ngIf="auth.isAuthenticated()" (click)="!auth.logout()">Logout</button>
         <button mat-button class="nav-link" *ngIf="!auth.isAuthenticated()" (click)="auth.login()">Login</button>
-      </span>
+        <button mat-button routerLink="/ping" class="nav-link" *ngIf="auth.isAuthenticated()" >Ping</button>
+
+
+    </span>
   </mat-toolbar-row>
 </mat-toolbar>
 <br>

@@ -5,7 +5,10 @@
 
   <mat-tab-group class="demo-tab-group">
     <mat-tab *ngFor="let sub of formattedSubs;let i = index;" label="{{sub}}">
-        <app-posts [topic]="subs[i]" style="padding: 1%;" (notify)="update($event)"></app-posts>
+        <app-posts [topic]="subs[i]"
+                   style="padding: 1%;"
+                   (notify)="update($event)"
+                    (output)="addComment($event,postId)"></app-posts>
     </mat-tab>
   </mat-tab-group>
 

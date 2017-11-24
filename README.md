@@ -1,4 +1,6 @@
 ## newsApp
+#### to-do
+- async  pipe to subscribe dynamically
 
 #### tasks
 1. ~~Login/Signup +15pts~~

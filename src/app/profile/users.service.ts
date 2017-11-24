@@ -6,13 +6,14 @@ import 'rxjs/add/operator/map';
 import {Users} from "./users.entity";
 import {HttpParams} from "@angular/common/http";
 import { Client, SearchResponse } from "elasticsearch";
+import {AuthHttp} from "angular2-jwt";
 
 
 @Injectable()
 export class UsersService {
 
 
-  constructor(protected http: Http) { }
+  constructor(protected http: Http,protected authHttp: AuthHttp) { }
 
 
 
@@ -27,7 +28,7 @@ export class UsersService {
   updateUser(body : Users): Observable<Users[]>{
     var url="http://localhost:3001/es/users/1/update"
 
-    return this.http
+    return this.authHttp
       .post(url,body)
       .map(a=>1)
       .catch(this.handleError);
@@ -37,14 +38,14 @@ export class UsersService {
     var body=user;
     console.log(body);
     var url="http://localhost:3001/es/users/1/create";
-    return this.http.post(url,user)
+    return this.authHttp.post(url,user)
       .map(a=> 1)
       .catch(this.handleError);
   }
 
   getSubscriptions():Observable<any>{
     var url="http://localhost:3001/api/listsubs";
-    return this.http
+    return this.authHttp
       .get(url)
       .map(x=>x.json().topics)
       .catch(this.handleError);

@@ -76,7 +76,7 @@ export class FavoritesComponent implements OnInit {
         i=Math.max(i,this.user.favorites.indexOf(this.postId+":-1"));
 
         console.log(i);
-        if(i>-1)
+        if(i>=0)
           this.userVote=this.user.favorites[i].split(":")[1];
       })
   }
