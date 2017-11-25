@@ -10,9 +10,9 @@
 3. ~~Submit Content & Read Content~~ +10pts <br>
    A pair must also provide: Badges, Notifications, and  Dashboard
 4. ~~Search for Content +15pts~~
-5. Content Feedback +10pts<br>
+5. ~~Content Feedback +10pts~~<br>
    Favorites and Vote to Promote
-6. Better Content +5pts<br>
+6. ~~Better Content +5pts~~<br>
    Individuals must provide tagging of terms onto favorites. A pair must provide a natural language interface to search
 7. Suggestions +15pts<br>
    Everyone will provide suggestions based on history
