@@ -5,7 +5,7 @@ export class Users{
   comments:string[];
   favorites:string[];
   heart:string[];
-  tags: Tag[];
+  tags: any;
   constructor(user:string){
     this.user=user;
     this.subscription=[];
@@ -20,8 +20,8 @@ export class Tag{
   id: string
   tag: string[];
   constructor(id:string,tag:string[]){
-    this.id=tag;
-    this.tag=id;
+    this.id=id;
+    this.tag=tag;
   }
 }
 

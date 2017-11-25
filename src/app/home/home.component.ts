@@ -22,6 +22,7 @@ export class HomeComponent implements OnInit {
 
   subs=["http://www.cnn.com"];
   User: Users;
+  tags;
   ngOnInit() {
 
     if (this.auth.userProfile) {
@@ -40,7 +41,7 @@ export class HomeComponent implements OnInit {
 
   mapTags(){
     var tempTags={}
-    if(!this.User)
+    if(!this.User || !this.tags)
       return
 
     let tagKeys=Object.keys(this.User.tags);
@@ -61,19 +62,20 @@ export class HomeComponent implements OnInit {
       this.User.heart.push(state.id);
   }
 
-  // updateUser(i,postId) {
-  //   if(i==0) {
-  //     this.User.favorites = this.User.favorites.filter((data) => data.split(":")[0] != postId);
-  //   }else{
-  //     let index=this.User.favorites.indexOf(postId+":1");
-  //     index=Math.max(index,this.User.favorites.indexOf(postId+":1"));
-  //     if(index<0)
-  //       this.User.favorites.push(postId+":"+i);
-  //     else{
-  //       this.User.favorites[index]=postId+":"+i;
-  //     }
-  //   }
-  // }
+  updateUser(i,postId) {
+    if(i==0) {
+      this.User.favorites = this.User.favorites.filter((data) => data.split(":")[0] != postId);
+    }else{
+      let index=this.User.favorites.indexOf(postId+":1");
+      index=Math.max(index,this.User.favorites.indexOf(postId+":1"));
+      if(index<0)
+        this.User.favorites.push(postId+":"+i);
+      else{
+        this.User.favorites[index]=postId+":"+i;
+      }
+    }
+  }
+
   updateTag(event : TagEntity){
     this.User.tags[event.id]=event.tag;
   }

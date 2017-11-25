@@ -4,18 +4,22 @@ import { Client, SearchResponse } from "elasticsearch";
 import { Http, Response,RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import {AuthService} from "./auth/auth.service";
+import {AuthHttp} from "angular2-jwt";
+import {AUTH_CONFIG} from "./auth/auth0-variables";
+
 @Injectable()
 export class SearchService {
   private _client: Client;
 
-  constructor(protected http: Http) {
+  constructor(protected http: Http,protected auth:AuthHttp) {
     if (!this._client) this._connect();
     this.http=http;
   }
 
   private _connect() {
     this._client = new Client({
-      host: 'http://localhost:9200',
+      host: AUTH_CONFIG.es,
     });
   }
 
@@ -24,7 +28,6 @@ export class SearchService {
 
     value=value.replace("http://","").replace("https://","")
     if (value) {
-      console.log(value)
       return this._client.search({
         index: index,
         q: `${key}:${value}`,
@@ -36,16 +39,16 @@ export class SearchService {
   }
 
   searchByword(word:string){
-    var url="http://localhost:3001/es/news/search/"+word;
+    var url=AUTH_CONFIG.nodeUrl+"/es/news/search/"+word;
 
-    return this.http.get(url)
+    return this.auth.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
   update(post){
-    var url='http://localhost:3001/es/news/post/update';
-    return this.http.post(url,post)
+    var url=AUTH_CONFIG.nodeUrl+'/es/news/post/update';
+    return this.auth.post(url,post)
       .map(x=>1)
       .catch(this.handleError)
 

@@ -7,14 +7,16 @@ import {Post} from "./posts.entity";
 
 
 import {SearchService} from "../search.service"
+import {AuthService} from "../auth/auth.service";
+import {AuthHttp} from "angular2-jwt";
 @Injectable()
 export class PostsService {
 
-  constructor(protected http: Http,protected es:SearchService) {}
+  constructor(protected http: Http,protected es:SearchService,protected auth:AuthHttp) {}
 
   getFormData(url): Observable<Post[]> {
 
-    return this.http.get(url)
+    return this.auth.get(url)
       .map(this.extractData)
       .catch(this.handleError);
   }

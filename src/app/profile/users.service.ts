@@ -7,6 +7,7 @@ import {Users} from "./users.entity";
 import {HttpParams} from "@angular/common/http";
 import { Client, SearchResponse } from "elasticsearch";
 import {AuthHttp} from "angular2-jwt";
+import {AUTH_CONFIG} from "../auth/auth0-variables";
 
 
 @Injectable()
@@ -15,10 +16,8 @@ export class UsersService {
 
   constructor(protected http: Http,protected authHttp: AuthHttp) { }
 
-
-
   getFormData(user: string): Observable<Users> {
-    var url="http://localhost:9200/users/_search?pretty=true&q=user:"+user;
+    var url=AUTH_CONFIG.es+"/users/_search?pretty=true&q=user:"+user;
     return this.http.get(url)
       .map(this.extractData)
       .catch(this.handleError);
@@ -26,7 +25,7 @@ export class UsersService {
 
 
   updateUser(body : Users): Observable<Users[]>{
-    var url="http://localhost:3001/es/users/1/update"
+    var url=AUTH_CONFIG.nodeUrl+"/es/users/1/update"
 
     return this.authHttp
       .post(url,body)
@@ -36,15 +35,14 @@ export class UsersService {
 
   createUser(user): Observable<any>{
     var body=user;
-    console.log(body);
-    var url="http://localhost:3001/es/users/1/create";
+    var url=AUTH_CONFIG.nodeUrl+"/es/users/1/create";
     return this.authHttp.post(url,user)
       .map(a=> 1)
       .catch(this.handleError);
   }
 
   getSubscriptions():Observable<any>{
-    var url="http://localhost:3001/api/listsubs";
+    var url=AUTH_CONFIG.nodeUrl+"/api/listsubs";
     return this.authHttp
       .get(url)
       .map(x=>x.json().topics)

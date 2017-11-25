@@ -99,7 +99,7 @@ app.get('/api/listsubs',function(req,res){
 
 
 
-app.get('/es/:obj/search/:text',function(req,res){
+app.get('/es/:obj/search/:text',checkJwt,function(req,res){
   var obj=req.params.obj;
   var text=req.params.text;
 
@@ -113,7 +113,7 @@ app.get('/es/:obj/search/:text',function(req,res){
   })
 });
 
-app.post('/es/:obj/:type/create',function(req,res){
+app.post('/es/:obj/:type/create',checkJwt,function(req,res){
   var body=req.body;
   var obj=req.params.obj;
   var type=req.params.type;
@@ -134,7 +134,7 @@ app.post('/es/:obj/:type/create',function(req,res){
   });
 });
 
-app.post('/es/:obj/:type/update',function(req,res){
+app.post('/es/:obj/:type/update',checkJwt,function(req,res){
   var body=req.body;
   var obj=req.params.obj;
   var type=req.params.type;
@@ -152,17 +152,11 @@ app.post('/es/:obj/:type/update',function(req,res){
     var prompt="success";
     if(error)
       prompt="faliure"
-      console.log(error);
     res.json({status:prompt})
   });
 });
 
 
-
-
-app.get('/api/public', function (req, res) {
-  res.json({message: "bitch please!"});
-});
 
 
 app.get('/api/private', checkJwt, function (req, res) {
