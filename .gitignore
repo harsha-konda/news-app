@@ -1,6 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
-.env
-/src/app/auth/auth0-variables.ts
+#.env
+#/src/app/auth/auth0-variables.ts
 # compiled output
 /dist
 /tmp
