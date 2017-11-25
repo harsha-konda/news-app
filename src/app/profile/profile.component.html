@@ -65,7 +65,7 @@
           <div class="card">
             <div class="card-block">
               <div class="list-group">
-                <a class="list-group-item active">Comments</a>
+                <mat-card class="list-group-item active">Comments</mat-card>
                 <a class="list-group-item list-group-item-action" *ngFor="let comment of profileData?.comments">
                   <mat-card>
                     <mat-card-header>
@@ -86,15 +86,16 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-12">
 
+        <br>
+        <div class="col-sm-12">
           <div class="card">
             <div class="card-block">
               <div class="list-group">
-                <a href="#" class="list-group-item active">Favorited Posts</a>
-                <a href="#" class="list-group-item list-group-item-action" *ngFor="let comment of profileData?.comment">
-                  {{comment}}
-                </a>
+                <mat-card class="list-group-item active">Favorited Posts</mat-card>
+                <mat-card class="list-group-item list-group-item-action" *ngFor="let text of hearts">
+                  {{text}}
+                </mat-card>
               </div>
             </div>
           </div>

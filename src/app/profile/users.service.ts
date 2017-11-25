@@ -23,6 +23,12 @@ export class UsersService {
       .catch(this.handleError);
   }
 
+  getUserHeart(user:string):Observable<string[]>{
+    var url=AUTH_CONFIG.nodeUrl+"/es/favorites/"+user;
+    return this.authHttp.get(url)
+      .map(x=>x.json())
+      .catch(this.handleError);
+  }
 
   updateUser(body : Users): Observable<Users[]>{
     var url=AUTH_CONFIG.nodeUrl+"/es/users/1/update"

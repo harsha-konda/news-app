@@ -20,6 +20,8 @@ export class ProfileComponent implements OnInit {
   multi: any[];
 
   topics;
+  hearts;
+
   constructor(public auth: AuthService,public user:UsersService) {
     Object.assign(this, {single, multi})
   }
@@ -29,11 +31,12 @@ export class ProfileComponent implements OnInit {
     if (this.auth.userProfile) {
       this.profile = this.auth.userProfile;
       this.getUserProfile(this.profile);
-
+      this.getHearts();
     } else {
       this.auth.getProfile((err, profile) => {
         this.profile = profile;
         this.getUserProfile(profile);
+        this.getHearts();
 
       });
     }
@@ -60,6 +63,17 @@ export class ProfileComponent implements OnInit {
   }
 
 
+  /**
+   * Get Hearts
+   * */
+  getHearts(){
+    this.user
+      .getUserHeart(this.profile.nickname)
+      .subscribe(data=>{
+        this.hearts=data;
+        console.log(this.hearts);
+      });
+  }
 
   /**
    * Get all the topics

@@ -157,6 +157,48 @@ app.post('/es/:obj/:type/update',checkJwt,function(req,res){
 });
 
 
+app.get('/es/favorites/:user',function(req,res){
+  var user=req.params.user;
+
+  client.search({
+    index:'users',
+    type:'1',
+    body:{
+      "_source": ["heart"],
+      query: {
+        term: {
+          user: {value:user}
+
+        }
+      }
+    }
+  },function(err,response){
+
+    var posts=(response.hits.hits[0]["_source"].heart);
+
+    var promisesArr=[];
+    posts.forEach(function(value){
+       promisesArr.push(new Promise(function(resolve,reject) {
+        client.get({
+          index:'news',
+          type:'post',
+          "_source":["text"],
+          id:value
+
+        },function(err,response){
+          resolve(response['_source']['text']);
+        })
+      }));
+    })
+
+    Promise.all(promisesArr).then(function(values){
+      res.json(values);
+    }).catch(function (err) {
+      res.json({status:"fail"});
+    });
+
+  });
+});
 
 
 app.get('/api/private', checkJwt, function (req, res) {
