@@ -1,0 +1,18 @@
+sudo: true
+language: node_js
+addons:
+  apt:
+    packages:
+      - "python3"
+      - "python3-pip"
+node_js:
+  - "6"
+install:
+  - sudo pip3 install flask
+  - sudo pip3 install requests
+  - sudo pip3 install newspaper3k
+  - sudo pip3 install elasticsearch
+  - npm install -g @angular/cli
+  - npm install
+script:
+  - npm start
