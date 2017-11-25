@@ -5,6 +5,7 @@ import {SearchService} from "../search.service";
 import {AuthService} from "../auth/auth.service";
 import {Comment} from "../comment/comment.entity";
 import {NgForm} from "@angular/forms";
+import {HeartEntity, TagEntity, Users} from "../profile/users.entity";
 
 @Component({
   selector: 'app-posts',
@@ -19,11 +20,16 @@ export class PostsComponent implements OnInit,OnChanges {
 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   @Output() output: EventEmitter<Comment>=new EventEmitter<Comment>();
+  @Output() heartNotify: EventEmitter<HeartEntity>=new EventEmitter<HeartEntity>();
+  @Output() outputTagNotify: EventEmitter<TagEntity>=new EventEmitter<TagEntity>();
+  @Input() heart;
+  @Input() tags=[];
 
   page=0;
   maxPages;
   auth;
 
+  heartSet
   uid;
 
   constructor(auth:AuthService,es:SearchService) {
@@ -33,10 +39,15 @@ export class PostsComponent implements OnInit,OnChanges {
   }
 
   ngOnInit() {
+
     this.query();
+    if(this.heart){
+      this.heartSet=new Set(this.heart);
+    }
   }
 
   ngOnChanges(){
+    console.log(this.tags);
     this.query();
   }
 
@@ -69,6 +80,24 @@ export class PostsComponent implements OnInit,OnChanges {
     this.newComment=null;
   }
 
+  /**
+   * notify on tag change
+   * */
+  tagNotify(event,id){
+    this.outputTagNotify.emit(new TagEntity(id,event.map(data=>data.name)));
+  }
+
+  /**
+   * heart notify
+   * */
+  favoriteNotify(event,id){
+
+    this.heartNotify.emit(new HeartEntity(id,event));
+  }
+
+  /**
+   * voting
+   * */
   onUpvoteChange(event:string,p){
 
     let data=event.split(":");

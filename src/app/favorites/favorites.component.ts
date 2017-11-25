@@ -45,7 +45,6 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log("inti"+this.upvotes);
     this.getUserdata();
   }
 

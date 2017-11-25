@@ -22,7 +22,7 @@ import { ScopeGuardService } from './auth/scope-guard.service';
 import { CommentComponent } from './comment/comment.component';
 import { PostsComponent } from './posts/posts.component';
 
-import {MatButtonModule, MatCheckboxModule} from '@angular/material';
+import { MatCheckboxModule} from '@angular/material';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatMenuModule} from '@angular/material/menu';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -41,6 +41,8 @@ import {MatChipsModule} from '@angular/material/chips';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list';
+import { HeartComponent } from './heart/heart.component';
+import {MatButtonModule} from '@angular/material/button';
 
 // import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import {NgxChartsModule} from '@swimlane/ngx-charts';
@@ -64,7 +66,8 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     PostsComponent,
     TopicsComponent,
     FavoritesComponent,
-    TagComponent
+    TagComponent,
+    HeartComponent
   ],
   imports: [
     BrowserModule,

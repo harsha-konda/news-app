@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material';
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
 
@@ -29,22 +29,24 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
   `,
   styleUrls: ['tag.component.css']
 })
-export class TagComponent {
+export class TagComponent implements OnChanges{
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
   addOnBlur: boolean = true;
 
   // Enter, comma
+  @Output() notify:  EventEmitter<any[]>=new EventEmitter<any[]>();
+
   separatorKeysCodes = [ENTER, COMMA];
 
   colors=['primary','accent','warn','']
-  fruits = [
-    { name: 'Lemon' },
-    { name: 'Lime' },
-    { name: 'Apple' },
-  ];
+  @Input() Fruits = [];
+  fruits=[];
 
+  ngOnChanges(){
+    this.fruits=this.Fruits.map(x=>({name:x}))
+  }
 
   add(event: MatChipInputEvent): void {
     let input = event.input;
@@ -59,6 +61,7 @@ export class TagComponent {
     if (input) {
       input.value = '';
     }
+    this.notify.emit(this.fruits);
   }
 
   remove(fruit: any): void {
@@ -67,5 +70,6 @@ export class TagComponent {
     if (index >= 0) {
       this.fruits.splice(index, 1);
     }
+    this.notify.emit(this.fruits);
   }
 }
