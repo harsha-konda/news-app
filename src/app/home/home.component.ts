@@ -1,4 +1,4 @@
-import {Component, OnInit, OnChanges, Input} from '@angular/core';
+import {Component, OnInit, OnChanges, Input,OnDestroy} from '@angular/core';
 import { AuthService } from './../auth/auth.service';
 import {UsersService} from "../profile/users.service";
 import {SearchService} from "../search.service";
@@ -10,7 +10,7 @@ import {HeartEntity, TagEntity, Users} from "../profile/users.entity";
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit,OnDestroy {
 
   constructor(public auth: AuthService,public user:UsersService,public es:SearchService) {
     setInterval(() => { this.esUpdateUser();this.mapTags() }, 1000);
@@ -23,7 +23,12 @@ export class HomeComponent implements OnInit {
   subs=["http://www.cnn.com"];
   User: Users;
   tags;
+  session={};
+  prevIndex=0;
+  time;
   ngOnInit() {
+    this.time=(new Date).getTime();
+
 
     if (this.auth.userProfile) {
       this.profile = this.auth.userProfile;
@@ -38,6 +43,19 @@ export class HomeComponent implements OnInit {
       });
     }
   }
+
+  ngOnDestroy(){
+    
+  }
+
+  focusChange(event){
+    var newTime=(new Date).getTime();
+    this.session[this.subs[this.prevIndex]]+=Math.round((newTime-this.time)/20000);
+    this.time=newTime;
+    this.prevIndex=event.index;
+  }
+
+
 
   mapTags(){
     var tempTags={}
@@ -102,6 +120,9 @@ export class HomeComponent implements OnInit {
     this.user.getFormData(user).subscribe(data=>{
       this.User=data;
       this.subs=data["subscription"];
+      this.subs.map((link)=>{
+        this.session[link]=0;
+      });
       this.formatSubs();
     });
   }

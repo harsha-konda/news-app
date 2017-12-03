@@ -48,6 +48,8 @@
 
           <mat-selection-list>
             <mat-list-item style="background: antiquewhite">Available Topics</mat-list-item>
+            <!--<mat-list-item><button mat-button color="primary" (click)="addSubsctiption([''])">Refresh</button></mat-list-item>-->
+            <!--<mat-list-item><app-tag [tagText]="'Request new Susbcription...'" [Fruits]="[]" (notify)="addSubsctiption($event)"></app-tag></mat-list-item>-->
             <mat-list-option *ngFor="let topic of topics;let i=index;"
                              selected="{{topic.sub}}"
                            (click)="handleSubscrption(i)">{{topic.link}}

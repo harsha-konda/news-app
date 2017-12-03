@@ -31,7 +31,6 @@ export class PostsComponent implements OnInit,OnChanges {
 
   heartSet
   uid;
-
   constructor(auth:AuthService,es:SearchService) {
     this.uid = "konda.harsha1";
     this.es=es;
@@ -39,7 +38,6 @@ export class PostsComponent implements OnInit,OnChanges {
   }
 
   ngOnInit() {
-
     this.query();
     if(this.heart){
       this.heartSet=new Set(this.heart);
@@ -51,9 +49,11 @@ export class PostsComponent implements OnInit,OnChanges {
     this.query();
   }
 
+
   onSubmit(f: NgForm){
     this.searchByWord(f.value.text);
   }
+
 
   searchByWord(word){
     this.es.searchByword(word)

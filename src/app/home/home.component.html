@@ -3,8 +3,9 @@
 
 
 
-  <mat-tab-group class="demo-tab-group">
-    <mat-tab *ngFor="let sub of formattedSubs;let i = index;" label="{{sub}}">
+  <mat-tab-group class="demo-tab-group" (focusChange)="focusChange($event)">
+    <mat-tab *ngFor="let sub of formattedSubs;let i = index;"
+             label="{{sub}}">
         <app-posts [topic]="subs[i]"
                    [heart]="User?.heart"
                    [tags]="User?.tags"
@@ -17,6 +18,8 @@
         </app-posts>
     </mat-tab>
   </mat-tab-group>
+
+
 
 </mat-card>
 

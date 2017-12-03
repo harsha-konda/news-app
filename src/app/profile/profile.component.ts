@@ -92,6 +92,13 @@ export class ProfileComponent implements OnInit {
   }
 
   /**
+   * add subscription
+   * */
+  addSubsctiption(urls){
+    this.user.addSubscription(urls[urls.length-1].name).subscribe();
+  }
+
+  /**
    * Dynamically update subcriptions
    * */
   handleSubscrption(i){

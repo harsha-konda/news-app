@@ -106,7 +106,7 @@ curl 'localhost:9200/_cat/indices?v'
 ```
 
 ```
-curl -XPUT  -H 'Content-Type: application/x-ndjson' localhost:9200/_bulk --data-binary @/Users/harsha/Google\ Drive/Semester-3/enterpriseWeb/newApp/flask/data1.json
+curl -XPUT  -H 'Content-Type: application/x-ndjson' localhost:9200/_bulk --data-binary @script/data1.json
 ```
 
 ### querying for documents

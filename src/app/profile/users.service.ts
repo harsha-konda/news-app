@@ -55,6 +55,18 @@ export class UsersService {
       .catch(this.handleError);
   }
 
+  /**
+   * Add new subscription
+   * */
+  addSubscription(subscription):Observable<any>{
+
+    var url=AUTH_CONFIG.nodeUrl+'/api/subs/add';
+    return this.authHttp
+      .post(url,{url:subscription })
+      .map(x=>x.json())
+      .catch(this.handleError)
+  }
+
 
   private extractData(res: Response) {
     let body = res.json();

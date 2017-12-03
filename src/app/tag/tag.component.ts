@@ -19,7 +19,7 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
           {{fruit.name}}
           <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
         </mat-chip>
-        <input placeholder="New Tag..."
+        <input placeholder="{{tagText}}"
                [matChipInputFor]="chipList"
                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                [matChipInputAddOnBlur]="addOnBlur"
@@ -36,6 +36,7 @@ export class TagComponent implements OnChanges{
   addOnBlur: boolean = true;
 
   // Enter, comma
+  @Input() tagText:string="New Tag...";
   @Output() notify:  EventEmitter<any[]>=new EventEmitter<any[]>();
 
   separatorKeysCodes = [ENTER, COMMA];
