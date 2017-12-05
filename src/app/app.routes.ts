@@ -8,10 +8,10 @@ import { AuthGuardService as AuthGuard } from './auth/auth-guard.service';
 import { ScopeGuardService as ScopeGuard } from './auth/scope-guard.service';
 
 export const ROUTES: Routes = [
-  { path: '', component: HomeComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'ping', component: PingComponent, canActivate: [AuthGuard] },
-  { path: 'admin', component: AdminComponent, canActivate: [ScopeGuard], data: { expectedScopes: ['write:messages']} },
-  { path: 'callback', component: CallbackComponent },
-  { path: '**', redirectTo: '' }
+  { pathMatch: 'full',path: '', component: HomeComponent },
+  { pathMatch: 'full',path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+  { pathMatch: 'full',path: 'ping', component: PingComponent, canActivate: [AuthGuard] },
+  { pathMatch: 'full',path: 'admin', component: AdminComponent, canActivate: [ScopeGuard], data: { expectedScopes: ['write:messages']} },
+  { pathMatch: 'full',path: 'callback', component: CallbackComponent },
+  { pathMatch: 'full',path: '**', redirectTo: '' }
 ];
