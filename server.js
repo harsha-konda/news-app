@@ -55,7 +55,7 @@ const checkScopesAdmin = jwtAuthz(['write:messages']);
 /**
  * delete contents of a table
  * */
-app.get('/api/delete/:index',function(req,res){
+app.get('/api/delete/:index',checkJwt,function(req,res){
   var index=req.params.index;
 
     client.deleteByQuery({
@@ -70,7 +70,7 @@ app.get('/api/delete/:index',function(req,res){
 /**
  * update News Feed
  * */
-app.get('/api/updateTable',function(req,res){
+app.get('/api/updateTable',checkJwt,function(req,res){
 
   var data="--data='"+JSON.stringify(Topics.topics)+"'";
   var process=spawn('python3',["script/script.py",data])
@@ -90,14 +90,14 @@ app.get('/api/updateTable',function(req,res){
 /**
  * Currently available subsctiption
  * */
-app.get('/api/listsubs',function(req,res){
+app.get('/api/listsubs',checkJwt,function(req,res){
   res.json({topics:Topics.topics});
 });
 
 /**
  * Add Subscription
  * */
-app.post('/api/subs/add/',function (req,res) {
+app.post('/api/subs/add/',checkJwt,function (req,res) {
   var url=req.body.url;
   if(url){
     Topics.add(url);
@@ -110,7 +110,7 @@ app.post('/api/subs/add/',function (req,res) {
 /**
  * Delete Subscription
  **/
-app.get('/api/subs/remove/:remove',function (req,res) {
+app.get('/api/subs/remove/:remove',checkJwt,function (req,res) {
   var url=req.params.remove;
   if(url)
     Topics.remove(url);
@@ -186,7 +186,7 @@ app.post('/es/:obj/:type/update',checkJwt,function(req,res){
 /**
  * Handle favorites
  **/
-app.get('/es/favorites/:user',function(req,res){
+app.get('/es/favorites/:user',checkJwt,function(req,res){
   var user=req.params.user;
 
   client.search({
