@@ -12,7 +12,6 @@ def insertDocs(newsPaper, url, download, file,params):
   for article in newsPaper.articles:
     if i > 100:
       break
-    print(i)
 
     if download:
       article.download()
@@ -64,7 +63,7 @@ if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument('--file', action='store_true', default=False)
   parser.add_argument('--no-cache',dest='memoize_articles',action='store_false',default=True)
-  parser.add_argument('--data',dest='urls',default=[])
+  parser.add_argument('--data',dest='urls',default='[]')
   params = vars(parser.parse_args())
   createIndex('news')
 
@@ -73,7 +72,7 @@ if __name__ == '__main__':
 
   data=json.loads(params['urls'].strip("'"))
 
-  popularTags = data if len(params['urls'])>0 else newspaper.popular_urls()
+  popularTags = data if len(data)>0 else newspaper.popular_urls()
 
   for url in popularTags:
     print("===============================buiding===============================", url)
