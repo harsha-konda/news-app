@@ -34,6 +34,7 @@
      *ngFor="let post of posts?.slice(this.page*10,this.page*10+10);let p=index;">
   <div class="card-header"><h3>{{post['_source'].title}}</h3></div>
 
+
   <div class="row">
 
     <div class="col-md-1" *ngIf="auth.isAuthenticated()">
@@ -51,7 +52,7 @@
 
         <app-tag *ngIf="auth.isAuthenticated()"
                  (notify)="tagNotify($event,post['_id'])"
-                 [Fruits]="(tags[post['_id']])?tags[post['_id']]:[]"></app-tag>
+                 [Fruits]="(tags)?tags[post['_id']]:[]"></app-tag>
 
         <app-heart *ngIf="auth.isAuthenticated()"
                    [switch]="heartSet?.has(post['_id'])"

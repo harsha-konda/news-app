@@ -6,6 +6,7 @@ export class Users{
   favorites:string[];
   heart:string[];
   tags: any;
+  session: {};
   constructor(user:string){
     this.user=user;
     this.subscription=[];
@@ -13,6 +14,7 @@ export class Users{
     this.favorites=[];
     this.heart=[];
     this.tags={};
+    this.session={};
   }
 }
 

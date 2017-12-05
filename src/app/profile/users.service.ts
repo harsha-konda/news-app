@@ -4,7 +4,7 @@ import { Http, Response,RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import {Users} from "./users.entity";
-import {HttpParams} from "@angular/common/http";
+// import {HttpParams} from "@angular/common/http";
 import { Client, SearchResponse } from "elasticsearch";
 import {AuthHttp} from "angular2-jwt";
 import {AUTH_CONFIG} from "../auth/auth0-variables";
@@ -17,6 +17,7 @@ export class UsersService {
   constructor(protected http: Http,protected authHttp: AuthHttp) { }
 
   getFormData(user: string): Observable<Users> {
+
     var url=AUTH_CONFIG.es+"/users/_search?pretty=true&q=user:"+user;
     return this.http.get(url)
       .map(this.extractData)
@@ -70,7 +71,7 @@ export class UsersService {
 
   private extractData(res: Response) {
     let body = res.json();
-    return body.hits.hits[0]["_source"] || { };
+    return body.hits.hits[0]["_source"];
   }
 
   private handleError (error: Response | any) {

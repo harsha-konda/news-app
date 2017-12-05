@@ -45,7 +45,7 @@ export class FavoritesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getUserdata();
+      this.getUserdata();
   }
 
   upvote() {
@@ -66,18 +66,19 @@ export class FavoritesComponent implements OnInit {
 
 
   getUserdata() {
-    this.us
-      .getFormData(this.userid)
-      .subscribe(data => {
-        this.user = data;
+    console.log(this.userid)
+    if(this.userid)
+      this.us
+        .getFormData(this.userid)
+        .subscribe((data) => {
+          this.user = data;
 
-        let i=this.user.favorites.indexOf(this.postId+":1");
-        i=Math.max(i,this.user.favorites.indexOf(this.postId+":-1"));
+          let i=this.user.favorites.indexOf(this.postId+":1");
+          i=Math.max(i,this.user.favorites.indexOf(this.postId+":-1"));
 
-        console.log(i);
-        if(i>=0)
-          this.userVote=this.user.favorites[i].split(":")[1];
-      })
+          if(i>=0)
+            this.userVote=this.user.favorites[i].split(":")[1];
+        })
   }
 
 

@@ -45,7 +45,6 @@ export class PostsComponent implements OnInit,OnChanges {
   }
 
   ngOnChanges(){
-    console.log(this.tags);
     this.query();
   }
 
@@ -91,7 +90,6 @@ export class PostsComponent implements OnInit,OnChanges {
    * heart notify
    * */
   favoriteNotify(event,id){
-
     this.heartNotify.emit(new HeartEntity(id,event));
   }
 
@@ -121,11 +119,26 @@ export class PostsComponent implements OnInit,OnChanges {
     this.maxPages= Array(num).fill(0).map((x,i)=>i);
   }
 
+  /**
+   * get post by link
+   * */
   query(){
     this.es.search("link",this.topic,"news").then((result)=>{
        this.posts=(result.hits.hits);
-        this.setMaxPages(this.posts);
-    }).catch((error) => {console.log(error)});
+       console.log(this.posts[0]['_source'].upvotes);
+       this.posts=this.posts.sort((a,b)=>{
+           var n1=a['_source'].upvotes;
+           var n2=b['_source'].upvotes;
+           if (n1 < n2)
+             return 1;
+
+           if (n1 > n2)
+             return -1;
+
+           return 0;
+       });
+       this.setMaxPages(this.posts);
+    }).catch();
   }
 
   nextPage(){
@@ -157,7 +170,4 @@ export class PostsComponent implements OnInit,OnChanges {
 
     value['_source'].upvotes+=1
   }
-
-
-
 }

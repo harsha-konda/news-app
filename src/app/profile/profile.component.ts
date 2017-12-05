@@ -84,9 +84,13 @@ export class ProfileComponent implements OnInit {
       .subscribe(
         data=> {
           var submap=[]
-          var set = new Set(this.profileData.subscription);
-          data.map(x=>submap.push({link:x,sub:set.has(x)}))
-          this.topics=submap;
+          if(this.profileData) {
+            var set = new Set(this.profileData.subscription);
+            data.map(x => submap.push({link: x, sub: set.has(x)}))
+            this.topics = submap;
+          }else{
+            this.getUserProfile(this.profile);
+          }
         }
     )
   }

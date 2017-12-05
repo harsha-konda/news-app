@@ -102,16 +102,14 @@ app.post('/api/subs/add/',function (req,res) {
   if(url){
     Topics.add(url);
     res.redirect('/api/updateTable')
-
   }else{
     res.json({added:true});
   }
-
 });
 
 /**
  * Delete Subscription
- * */
+ **/
 app.get('/api/subs/remove/:remove',function (req,res) {
   var url=req.params.remove;
   if(url)
@@ -121,7 +119,7 @@ app.get('/api/subs/remove/:remove',function (req,res) {
 
 /**
  * Get news feed for a url
- * */
+ **/
 app.get('/es/:obj/search/:text',checkJwt,function(req,res){
   var obj=req.params.obj;
   var text=req.params.text;
@@ -138,7 +136,7 @@ app.get('/es/:obj/search/:text',checkJwt,function(req,res){
 
 /**
  * create an md5 hash of post/user comment
- * */
+ **/
 app.post('/es/:obj/:type/create',checkJwt,function(req,res){
   var body=req.body;
   var obj=req.params.obj;
@@ -162,7 +160,7 @@ app.post('/es/:obj/:type/create',checkJwt,function(req,res){
 
 /**
  * update either posts/users
- * */
+ **/
 app.post('/es/:obj/:type/update',checkJwt,function(req,res){
   var body=req.body;
   var obj=req.params.obj;
@@ -187,7 +185,7 @@ app.post('/es/:obj/:type/update',checkJwt,function(req,res){
 
 /**
  * Handle favorites
- * */
+ **/
 app.get('/es/favorites/:user',function(req,res){
   var user=req.params.user;
 

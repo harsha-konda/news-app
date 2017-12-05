@@ -21,15 +21,24 @@ export class HomeComponent implements OnInit,OnDestroy {
   profile;
 
   subs=["http://www.cnn.com"];
-  User: Users;
+  @Input() User: Users;
   tags;
   session={};
   prevIndex=0;
   time;
   ngOnInit() {
     this.time=(new Date).getTime();
+    if(this.auth.isAuthenticated())
+      this.fetchData();
+  }
 
 
+
+  ngOnDestroy(){
+    this.esUpdateUser();
+  }
+
+  fetchData(){
     if (this.auth.userProfile) {
       this.profile = this.auth.userProfile;
       this.getUserData(this.profile.nickname);
@@ -42,15 +51,15 @@ export class HomeComponent implements OnInit,OnDestroy {
         this.formatSubs();
       });
     }
-  }
 
-  ngOnDestroy(){
-    
   }
 
   focusChange(event){
     var newTime=(new Date).getTime();
-    this.session[this.subs[this.prevIndex]]+=Math.round((newTime-this.time)/20000);
+    if(!this.User.session[this.subs[this.prevIndex]])
+      this.User.session[this.subs[this.prevIndex]]=0;
+
+    this.User.session[this.subs[this.prevIndex]]+=Math.round((newTime-this.time)/20000);
     this.time=newTime;
     this.prevIndex=event.index;
   }
@@ -112,8 +121,10 @@ export class HomeComponent implements OnInit,OnDestroy {
     if(!this.User)
       return;
 
-    delete this.User.subscription;
-    this.user.updateUser(this.User).subscribe();
+    if(this.auth.isAuthenticated()){
+      delete this.User.subscription;
+      this.user.updateUser(this.User).subscribe();
+    }
   }
 
   getUserData(user){
@@ -124,6 +135,8 @@ export class HomeComponent implements OnInit,OnDestroy {
         this.session[link]=0;
       });
       this.formatSubs();
+    },err=>{
+      this.createUserProfile();
     });
   }
 
@@ -132,6 +145,12 @@ export class HomeComponent implements OnInit,OnDestroy {
       a.replace("http:\/\/","")
         .replace("\.com","")
         .replace("www\.",""));
+  }
+
+  createUserProfile(){
+    this.user
+      .createUser(new Users(this.profile.nickname))
+      .subscribe((data)=>this.getUserData(this.profile.nickname));
   }
 
 

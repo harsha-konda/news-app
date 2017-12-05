@@ -2,6 +2,7 @@
 <mat-card  *ngIf="auth.isAuthenticated()">
 
 
+  <mat-card *ngIf="formattedSubs && formattedSubs.length==0">You have no active subscrptions please subcribe to get a personalized news feed</mat-card>
 
   <mat-tab-group class="demo-tab-group" (focusChange)="focusChange($event)">
     <mat-tab *ngFor="let sub of formattedSubs;let i = index;"
@@ -18,8 +19,6 @@
         </app-posts>
     </mat-tab>
   </mat-tab-group>
-
-
 
 </mat-card>
 
