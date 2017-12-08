@@ -1,3 +1,5 @@
+#compatible with ubuntu:16.04
+install_npm{
 sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
@@ -10,12 +12,94 @@ sudo pip3 install newspaper3k
 sudo chown -R $(whoami) ~/.npm
 sudo apt-get install -y build-essential
 
-#es
-wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-sudo apt-get install apt-transport-https
-echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
-sudo apt-get update && sudo apt-get install elasticsearch
+#sudo for npm
+npm config get prefix
+sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
+
+npm install -g elasticdump
+npm install -g @angular/cli > /dev/null
+
+}
+#install docker
+install_docker(){
+sudo apt-get update
+ sudo apt-get install -y\
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    software-properties-common
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+sudo apt-get update
+sudo apt-get install docker-ce
+
+#build docker
+cd es
+#increase virual memory
+sudo sysctl -w vm.max_map_count=262144
+sudo docker build . --tag=es
+sudo docker run -d -it -p 9200:9200 es
+
+a=$(curl localhost:9200)
+while [ -z a ]
+do
+sleep 3
+a=$(curl localhost:9200)
+done 
+}
 
 
-sudo -i service elasticsearch start
-sudo -i service elasticsearch stop
+load_db(){
+	curl -XPUT 'localhost:9200/news?pretty' -H 'Content-Type: application/json' -d'
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+
+curl -XPUT 'localhost:9200/users?pretty' -H 'Content-Type: application/json' -d'
+{
+    "settings" : {
+        "index" : {
+            "number_of_shards" : 3, 
+            "number_of_replicas" : 2 
+        }
+    }
+}
+'
+
+elasticdump \
+  --input=${PWD}/data/my_index.json \
+  --output=http://localhost:9200/news \
+  --type=data \
+--headers='{"Content-Type": "application/json"}' \
+--limit=10000
+
+}
+
+
+config(){
+	dns=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)
+	line=$'var dns="'$dns$'";'
+	sed -i "10s/.*/$line/" src/app/auth/auth0-variables.ts
+}
+
+
+install_npm
+install_docker
+load_db
+cd ..
+config
+npm i
+npm i
+npm start

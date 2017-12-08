@@ -10,7 +10,7 @@
     "server": "node server.js",
     "serverbg":"nohup node server.js &",
     "clientbg":"nohup ng serve --disable-host-check &",
-    "client": "ng serve",
+    "client": "ng serve --disable-host-check",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

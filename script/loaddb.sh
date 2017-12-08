@@ -20,18 +20,8 @@ curl -XPUT 'localhost:9200/users?pretty' -H 'Content-Type: application/json' -d'
 }
 '
 
-
-
 elasticdump \
-  --input=http://localhost:9200/news \
-  --output=/Users/harsha/Google\ Drive/Semester-3/enterpriseWeb/newApp/es/data/my_index.json \
-  --type=data \
---headers='{"Content-Type": "application/json"}' \
---limit=10000
-
-
-elasticdump \
-  --input=/Users/harsha/Google\ Drive/Semester-3/enterpriseWeb/newApp/es/data/my_index.json \
+  --input=${PWD}/my_index.json \
   --output=http://localhost:9200/news \
   --type=data \
 --headers='{"Content-Type": "application/json"}' \
