@@ -46,8 +46,9 @@ export class TagComponent implements OnChanges{
   fruits=[];
 
   ngOnChanges(){
-    if(this.Fruits)
-      this.fruits=this.Fruits.map(x=>({name:x}))
+    if(this.Fruits) {
+      this.fruits = this.Fruits.map(x => ({name: x}))
+    }
   }
 
   add(event: MatChipInputEvent): void {

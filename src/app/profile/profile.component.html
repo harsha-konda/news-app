@@ -45,14 +45,13 @@
          aria-labelledby="myLargeModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
-
           <mat-selection-list>
             <mat-list-item style="background: antiquewhite">Available Topics</mat-list-item>
             <!--<mat-list-item><button mat-button color="primary" (click)="addSubsctiption([''])">Refresh</button></mat-list-item>-->
             <!--<mat-list-item><app-tag [tagText]="'Request new Susbcription...'" [Fruits]="[]" (notify)="addSubsctiption($event)"></app-tag></mat-list-item>-->
             <mat-list-option *ngFor="let topic of topics;let i=index;"
                              selected="{{topic.sub}}"
-                           (click)="handleSubscrption(i)">{{topic.link}}
+                             (click)="handleSubscrption(i)">{{topic.link}}
             </mat-list-option>
           </mat-selection-list>
         </div>
@@ -61,6 +60,35 @@
 
 
     <div class="col-sm-9">
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="card-block">
+            <div class="list-group">
+              <mat-card class="list-group-item active">Favorited Posts</mat-card>
+              <mat-grid-list cols="2"  rowHeight="580px">
+                <mat-grid-tile *ngFor="let text of hearts" >
+                  <mat-card>
+                    <mat-card-header>
+                      <mat-card-title style="font-size: large">{{text['title']}}</mat-card-title>
+                      <mat-card-subtitle *ngIf="text['tags'] && text['tags'].length>0">
+                        <mat-chip-list #chipList>
+                          <mat-chip *ngFor="let tag of text['tags'];let i=index;"
+                                    color="{{colors[i%colors.length]}}"
+                                    selected="true">{{tag}}</mat-chip>
+                        </mat-chip-list>
+
+                      </mat-card-subtitle>
+                    </mat-card-header>
+                    <img mat-card-image src="{{text['image']}}" style="max-height: 300px">
+                    <mat-card-content style="height:200px;overflow: scroll">{{text['summary']}}</mat-card-content>
+
+                  </mat-card>
+                </mat-grid-tile>
+              </mat-grid-list>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="row">
         <div class="col-sm-12">
@@ -75,8 +103,9 @@
 
                     </mat-card-header>
                     <mat-chip-list>
-                      <mat-chip color="primary" selected="true" *ngIf="comment">{{comment.timestamp|amTimeAgo}}</mat-chip>
-                      <mat-chip color="accent" selected="true" > {{comment?.pid}}</mat-chip>
+                      <mat-chip color="primary" selected="true" *ngIf="comment">{{comment.timestamp|amTimeAgo}}
+                      </mat-chip>
+                      <mat-chip color="accent" selected="true"> {{comment?.pid}}</mat-chip>
                     </mat-chip-list>
                     <br>
 
@@ -90,18 +119,7 @@
         </div>
 
         <br>
-        <div class="col-sm-12">
-          <div class="card">
-            <div class="card-block">
-              <div class="list-group">
-                <mat-card class="list-group-item active">Favorited Posts</mat-card>
-                <mat-card class="list-group-item list-group-item-action" *ngFor="let text of hearts">
-                  {{text}}
-                </mat-card>
-              </div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
 

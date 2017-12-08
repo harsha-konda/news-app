@@ -193,7 +193,7 @@ app.get('/es/favorites/:user',checkJwt,function(req,res){
     index:'users',
     type:'1',
     body:{
-      "_source": ["heart"],
+      "_source": ["heart","tags"],
       query: {
         term: {
           user: {value:user}
@@ -205,19 +205,15 @@ app.get('/es/favorites/:user',checkJwt,function(req,res){
 
     if(response.hits.hits[0]){
       var posts=(response.hits.hits[0]["_source"].heart);
+      posts=posts.concat(response.hits.hits[0]["_source"].tags);
       var promisesArr=[];
       posts.forEach(function(value){
-        promisesArr.push(new Promise(function(resolve,reject) {
-          client.get({
-            index:'news',
-            type:'post',
-            "_source":["text"],
-            id:value
-
-          },function(err,response){
-            resolve(response['_source']['text']);
-          })
-        }));
+          // value=Object.keys(value)[0];
+          if(typeof(value)!="string")
+            Object.keys(value).forEach((data)=>searchContext(promisesArr,data,value[data]));
+          else
+            searchContext(promisesArr,value,null);
+       
       })
 
       Promise.all(promisesArr).then(function(values){
@@ -232,6 +228,23 @@ app.get('/es/favorites/:user',checkJwt,function(req,res){
   });
 });
 
+
+function searchContext(promisesArr,value,tags){
+   promisesArr.push(new Promise(function(resolve,reject) {
+        client.get({
+          index:'news',
+          type:'post',
+          "_source":["text","title","summary","image"],
+          id:value
+
+        },function(err,response){
+          if(tags)
+            response["_source"]["tags"]=tags;
+          resolve(response['_source']);
+        })
+    }));
+
+}
 
 app.get('/api/private', checkJwt, function (req, res) {
   res.json({message: "Hello from a private endpoint1! You need to be authenticated and have a scope of read:messages to see this."});

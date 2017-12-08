@@ -8,7 +8,7 @@
     "start": "npm-run-all --parallel server client",
     "bg": "npm-run-all --parallel serverbg clientbg",
     "server": "node server.js",
-    "serverbg":"nohup server.js &",
+    "serverbg":"nohup node server.js &",
     "clientbg":"nohup ng serve --disable-host-check &",
     "client": "ng serve",
     "build": "ng build",

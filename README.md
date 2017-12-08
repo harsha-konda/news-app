@@ -1,8 +1,12 @@
 ## newsApp
 [![Build Status](https://travis-ci.com/harsha-konda/news-app.svg?token=rDtgdJpvq2dsfcM9RHLT&branch=master)](https://travis-ci.com/harsha-konda/news-app)
-#### to-do
+#### issues
 - async  pipe to subscribe dynamically
+- fix comments issue
+- search for tags 
+- improve the backend loading
 
+---
 #### tasks
 1. ~~Login/Signup +15pts~~
    A pair must also provide inline validation

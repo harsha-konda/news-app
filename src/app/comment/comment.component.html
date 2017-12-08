@@ -9,7 +9,6 @@
 
   <mat-card-content *ngIf="!comment">
     Add a new comment
-
   </mat-card-content>
 
   <mat-card-content>
@@ -23,17 +22,19 @@
     <div class="panel panel-white post panel-shadow" style="padding: 2%">
 
       <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-        <textarea class="form-control" name="text" rows="6" ngModel required></textarea>
+        <textarea class="form-control" name="text" rows="3" ngModel required></textarea>
         <br>
         <button mat-raised-button color="primary" [disabled]="f.invalid">Post</button>
       </form>
 
     </div>
   </div>
+  <mat-divider></mat-divider>
   <mat-card-footer>
-    <app-comment  *ngFor="let com of comment?.replies" [comment]="com" (notify)="onNotify($event)"></app-comment>
+    <app-comment  *ngFor="let com of comment?.replies"
+                  [comment]="com"
+                  (notify)="onNotify($event)"></app-comment>
   </mat-card-footer>
 </mat-card>
-
 
 

@@ -21,6 +21,7 @@ export class ProfileComponent implements OnInit {
 
   topics;
   hearts;
+  colors=['primary','accent','warn','']
 
   constructor(public auth: AuthService,public user:UsersService) {
     Object.assign(this, {single, multi})

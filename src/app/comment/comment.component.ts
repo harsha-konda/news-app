@@ -9,7 +9,7 @@ import {NgForm} from '@angular/forms';
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.css']
 })
-export class CommentComponent implements OnInit {
+export class CommentComponent implements OnInit,OnChanges {
 
   constructor() { }
 
@@ -20,8 +20,12 @@ export class CommentComponent implements OnInit {
 
   @Output() notify: EventEmitter<Comment> = new EventEmitter<Comment>();
 
-  ngOnInit(){
 
+  ngOnInit(){
+  }
+
+  ngOnChanges(changes:SimpleChanges){
+    this.comment=(changes.comment.currentValue);
   }
 
   onSubmit(f: NgForm){
