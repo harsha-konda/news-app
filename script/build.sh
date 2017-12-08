@@ -1,5 +1,5 @@
 #compatible with ubuntu:16.04
-install_npm{
+install_npm(){
 sudo apt-get update
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 sudo apt-get install -y nodejs
@@ -13,11 +13,12 @@ sudo chown -R $(whoami) ~/.npm
 sudo apt-get install -y build-essential
 
 #sudo for npm
-npm config get prefix
-sudo chown -R $(whoami) $(npm config get prefix)/{lib/node_modules,bin,share}
-
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+export PATH=~/.npm-global/bin:$PATH
+source ~/.profile
 npm install -g elasticdump
-npm install -g @angular/cli > /dev/null
+npm install -g @angular/cli 
 
 }
 #install docker
@@ -37,21 +38,22 @@ sudo add-apt-repository \
    stable"
 
 sudo apt-get update
-sudo apt-get install docker-ce
+sudo apt-get install -y docker-ce
 
 #build docker
-cd es
+cd ../es
 #increase virual memory
 sudo sysctl -w vm.max_map_count=262144
 sudo docker build . --tag=es
 sudo docker run -d -it -p 9200:9200 es
 
 a=$(curl localhost:9200)
-while [ -z a ]
+while [[ -z $a ]]
 do
 sleep 3
 a=$(curl localhost:9200)
 done 
+
 }
 
 
@@ -88,10 +90,14 @@ elasticdump \
 }
 
 
-config(){
+dns_config(){
 	dns=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)
-	line=$'var dns="'$dns$'";'
-	sed -i "10s/.*/$line/" src/app/auth/auth0-variables.ts
+
+  if [[ ! -z dns ]]
+    then
+      line=$'var dns="'$dns$'";'
+      sed -i "10s/.*/$line/" src/app/auth/auth0-variables.ts
+  fi
 }
 
 
@@ -102,4 +108,3 @@ cd ..
 config
 npm i
 npm i
-npm start

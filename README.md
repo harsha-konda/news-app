@@ -1,10 +1,13 @@
 ## newsApp
 [![Build Status](https://travis-ci.com/harsha-konda/news-app.svg?token=rDtgdJpvq2dsfcM9RHLT&branch=master)](https://travis-ci.com/harsha-konda/news-app)
-#### issues
-- async  pipe to subscribe dynamically
-- fix comments issue
-- search for tags 
-- improve the backend loading
+#### Deploying
+
+```
+cd news-app/script
+./build.sh
+cd ..
+npm start
+```
 
 ---
 #### tasks
