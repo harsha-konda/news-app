@@ -13,7 +13,6 @@ import {HeartEntity, TagEntity, Users} from "../profile/users.entity";
 export class HomeComponent implements OnInit,OnDestroy {
 
   constructor(public auth: AuthService,public user:UsersService,public es:SearchService) {
-    setInterval(() => { this.esUpdateUser();this.mapTags() }, 1000);
   }
 
   formattedSubs;
@@ -62,6 +61,7 @@ export class HomeComponent implements OnInit,OnDestroy {
     this.User.session[this.subs[this.prevIndex]]+=Math.round((newTime-this.time)/20000);
     this.time=newTime;
     this.prevIndex=event.index;
+    this.esUpdateUser();
   }
 
 
@@ -80,6 +80,7 @@ export class HomeComponent implements OnInit,OnDestroy {
       }
     }
     this.tags=tempTags;
+
   }
 
   updateHeart(state: HeartEntity){
@@ -87,6 +88,7 @@ export class HomeComponent implements OnInit,OnDestroy {
       this.User.heart=this.User.heart.filter((data)=>data!=state.id);
     else
       this.User.heart.push(state.id);
+    this.esUpdateUser();
   }
 
   updateUser(i,postId) {
@@ -101,19 +103,21 @@ export class HomeComponent implements OnInit,OnDestroy {
         this.User.favorites[index]=postId+":"+i;
       }
     }
+    this.mapTags();
   }
 
   updateTag(event : TagEntity){
     this.User.tags[event.id]=event.tag;
+    this.esUpdateUser();
   }
 
 
   addComment(event){
     this.User.comments.push(event);
+    this.esUpdateUser();
   }
 
   update(event){
-    console.log({home:event});
     this.updateUser(event.split(":")[1],event.split(":")[0]);
   }
 
