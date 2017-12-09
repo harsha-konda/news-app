@@ -9,7 +9,7 @@ export class Users{
   session: {};
   constructor(user:string){
     this.user=user;
-    this.subscription=[];
+    this.subscription=["http://cnn.com","http://www.cnbc.com"];
     this.comments=[];
     this.favorites=[];
     this.heart=[];

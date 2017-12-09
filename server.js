@@ -7,13 +7,13 @@ const cors = require('cors');
 var request = require('request');
 var async = require("async");
 var webshot = require('webshot');
-var path=require('path');
+var path = require('path');
 require('dotenv').config();
-var es=require('elasticsearch');
+var es = require('elasticsearch');
 var bodyParser = require('body-parser')
 var crypto = require('crypto');
 var homepage = require("./server/homepage.js");
-var Topics=require("./server/topics.js");
+var Topics = require("./server/topics.js");
 var spawn = require("child_process").spawn;
 
 var client = new es.Client({
@@ -55,171 +55,174 @@ const checkScopesAdmin = jwtAuthz(['write:messages']);
 /**
  * delete contents of a table
  * */
-app.get('/api/delete/:index',checkJwt,function(req,res){
-  var index=req.params.index;
+app.get('/api/delete/:index', checkJwt, function (req, res) {
+  var index = req.params.index;
 
-    client.deleteByQuery({
-      "index":index,
-      q:'*:*'
-    }).then(function(body){
-      res.json(body);
-    },function(error){});
+  client.deleteByQuery({
+    "index": index,
+    q: '*:*'
+  }).then(function (body) {
+    res.json(body);
+  }, function (error) {
+  });
 
 });
 
 /**
  * update News Feed
  * */
-app.get('/api/updateTable',checkJwt,function(req,res){
+app.get('/api/updateTable', checkJwt, function (req, res) {
 
-  var data="--data='"+JSON.stringify(Topics.topics)+"'";
-  var process=spawn('python3',["script/script.py",data])
+  var data = "--data='" + JSON.stringify(Topics.topics) + "'";
+  var process = spawn('python3', ["script/script.py", data])
 
-  process.stderr.on('data',function (data) {
+  process.stderr.on('data', function (data) {
     console.log(data.toString('utf-8').trim());
 
   })
-  process.stdout.on('data', function (data){
+  process.stdout.on('data', function (data) {
 
     console.log(data.toString('utf-8').trim());
   });
 
-  res.json({"inservice":1})
+  res.json({"inservice": 1})
 });
 
 /**
  * Currently available subsctiption
  * */
-app.get('/api/listsubs',checkJwt,function(req,res){
-  res.json({topics:Topics.topics});
+app.get('/api/listsubs', checkJwt, function (req, res) {
+  res.json({topics: Topics.topics});
 });
 
 /**
  * Add Subscription
  * */
-app.post('/api/subs/add/',checkJwt,function (req,res) {
-  var url=req.body.url;
-  if(url){
+app.post('/api/subs/add/', checkJwt, function (req, res) {
+  var url = req.body.url;
+  if (url) {
     Topics.add(url);
     res.redirect('/api/updateTable')
-  }else{
-    res.json({added:true});
+  } else {
+    res.json({added: true});
   }
 });
 
 /**
  * Delete Subscription
  **/
-app.get('/api/subs/remove/:remove',checkJwt,function (req,res) {
-  var url=req.params.remove;
-  if(url)
+app.get('/api/subs/remove/:remove', checkJwt, function (req, res) {
+  var url = req.params.remove;
+  if (url)
     Topics.remove(url);
-  res.json({removed:true});
+  res.json({removed: true});
 });
 
 /**
  * Get news feed for a url
  **/
-app.get('/es/:obj/search/:text',checkJwt,function(req,res){
-  var obj=req.params.obj;
-  var text=req.params.text;
+app.get('/es/:obj/search/:text', checkJwt, function (req, res) {
+  var obj = req.params.obj;
+  var text = req.params.text;
 
   client.search({
-    index:obj,
-    size:100,
-    q:text
-  }).then(function(body){
+    index: obj,
+    size: 100,
+    q: text
+  }).then(function (body) {
     res.json(body);
-  },function(error){
+  }, function (error) {
   })
 });
 
 /**
  * create an md5 hash of post/user comment
  **/
-app.post('/es/:obj/:type/create',checkJwt,function(req,res){
-  var body=req.body;
-  var obj=req.params.obj;
-  var type=req.params.type;
+app.post('/es/:obj/:type/create', checkJwt, function (req, res) {
+  var body = req.body;
+  var obj = req.params.obj;
+  var type = req.params.type;
 
-  var key=req.body.user?req.body.user:req.body.text;
+  var key = req.body.user ? req.body.user : req.body.text;
 
   client.create({
     index: obj,
     type: type,
-    id:crypto.createHash('md5').update(key).digest('hex'),
+    id: crypto.createHash('md5').update(key).digest('hex'),
     body: body,
 
   }, function (error, response) {
-    var prompt="success";
-    if(error)
-      prompt="faliure"
-    res.json({status:prompt})
+    var prompt = "success";
+    if (error)
+      prompt = "faliure"
+    res.json({status: prompt})
   });
 });
 
 /**
  * update either posts/users
  **/
-app.post('/es/:obj/:type/update',checkJwt,function(req,res){
-  var body=req.body;
-  var obj=req.params.obj;
-  var type=req.params.type;
+app.post('/es/:obj/:type/update', checkJwt, function (req, res) {
+  var body = req.body;
+  var obj = req.params.obj;
+  var type = req.params.type;
 
-  body=(obj=='news')?body["_source"]:body;
-  var key=req.body.user?crypto.createHash('md5').update(req.body.user).digest('hex'):req.body._id;
+  body = (obj == 'news') ? body["_source"] : body;
+  var key = req.body.user ? crypto.createHash('md5').update(req.body.user).digest('hex') : req.body._id;
 
   client.update({
     index: obj,
     type: type,
-    id:key,
-    body: {doc:body},
+    id: key,
+    body: {doc: body},
 
   }, function (error, response) {
-    var prompt="success";
-    if(error)
-      prompt="faliure"
-    res.json({status:prompt})
+    var prompt = "success";
+    if (error)
+      prompt = "faliure"
+    res.json({status: prompt})
   });
 });
 
 /**
  * Handle favorites
  **/
-app.get('/es/favorites/:user',checkJwt,function(req,res){
-  var user=req.params.user;
+app.get('/es/favorites/:user', checkJwt, function (req, res) {
+  var user = req.params.user;
 
   client.search({
-    index:'users',
-    type:'1',
-    body:{
-      "_source": ["heart","tags"],
+    index: 'users',
+    type: '1',
+    body: {
+      "_source": ["heart", "tags"],
       query: {
         term: {
-          user: {value:user}
+          user: {value: user}
 
         }
       }
     }
-  },function(err,response){
+  }, function (err, response) {
 
-    if(response.hits.hits[0]){
-      var posts=(response.hits.hits[0]["_source"].heart);
-      posts=posts.concat(response.hits.hits[0]["_source"].tags);
-      var promisesArr=[];
-      posts.forEach(function(value){
-          // value=Object.keys(value)[0];
-          if(typeof(value)!="string")
-            Object.keys(value).forEach((data)=>searchContext(promisesArr,data,value[data]));
-          else
-            searchContext(promisesArr,value,null);
-       
+    if (response.hits.hits[0]) {
+      var posts = (response.hits.hits[0]["_source"].heart);
+      posts = posts.concat(response.hits.hits[0]["_source"].tags);
+      var promisesArr = [];
+      posts.forEach(function (value) {
+        // value=Object.keys(value)[0];
+        if (typeof(value) != "string")
+          Object.keys(value).forEach((data)=>searchContext(promisesArr, data, value[data])
+      )
+        ;
+      else
+        searchContext(promisesArr, value, null);
+
       })
 
-      Promise.all(promisesArr).then(function(values){
+      Promise.all(promisesArr).then(function (values) {
         res.json(values);
       }).catch(function (err) {
-        res.json({status:"fail"});
+        res.json({status: "fail"});
       });
 
 
@@ -229,20 +232,82 @@ app.get('/es/favorites/:user',checkJwt,function(req,res){
 });
 
 
-function searchContext(promisesArr,value,tags){
-   promisesArr.push(new Promise(function(resolve,reject) {
-        client.get({
+function searchContext(promisesArr, value, tags) {
+  promisesArr.push(new Promise(function (resolve, reject) {
+    client.get({
+      index: 'news',
+      type: 'post',
+      "_source": ["text", "title", "summary", "image"],
+      id: value
+
+    }, function (err, response) {
+      if (tags)
+        response["_source"]["tags"] = tags;
+      resolve(response['_source']);
+    })
+  }));
+
+}
+
+app.get('/es/recommend/:user', function (req, response) {
+  var user = req.params.user;
+  client.search({
+    index: 'users',
+    type: '1',
+    body: {
+      "_source": ["heart", "tags"],
+      query: {
+        term: {
+          user: {value: user}
+
+        }
+      }
+    }
+  }, function (req, res) {
+    if (res.hits.hits[0]) {
+      var posts = (res.hits.hits[0]["_source"].heart);
+      client.search({
+        index: 'news',
+        type: 'post',
+        body: {
+          "_source":["keywords"],
+          query: {
+            ids: {
+              values: posts
+            }
+          }
+        }
+      }, function (req, res) {
+        var result=(res.hits.hits);
+        var keyWords=new Set();
+        result.forEach((data)=>data["_source"]['keywords'].forEach((key)=>keyWords.add(key)));
+
+        var keywords=Array.from(keyWords);
+        client.search({
           index:'news',
           type:'post',
-          "_source":["text","title","summary","image"],
-          id:value
+          body:{
+            query:{
+              bool:{
+                must:{
+                terms:{
+                  keywords: keywords,
+                },
+              },
+              }
+            },
+            size:5
+          }
+        },function(req,res){
+          response.json({res:res.hits.hits});
+        });
 
-        },function(err,response){
-          if(tags)
-            response["_source"]["tags"]=tags;
-          resolve(response['_source']);
-        })
-    }));
+      });
+    }
+  });
+});
+
+function recommendations() {
 
 }
 

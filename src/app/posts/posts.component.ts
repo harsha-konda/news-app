@@ -125,7 +125,6 @@ export class PostsComponent implements OnInit,OnChanges {
   query(){
     this.es.search("link",this.topic,"news").then((result)=>{
        this.posts=(result.hits.hits);
-       console.log(this.posts[0]['_source'].upvotes);
        this.posts=this.posts.sort((a,b)=>{
            var n1=a['_source'].upvotes;
            var n2=b['_source'].upvotes;

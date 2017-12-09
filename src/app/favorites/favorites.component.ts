@@ -66,7 +66,6 @@ export class FavoritesComponent implements OnInit {
 
 
   getUserdata() {
-    console.log(this.userid)
     if(this.userid)
       this.us
         .getFormData(this.userid)

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {MatChipInputEvent} from '@angular/material';
 import {ENTER, COMMA} from '@angular/cdk/keycodes';
 
@@ -29,7 +29,7 @@ import {ENTER, COMMA} from '@angular/cdk/keycodes';
   `,
   styleUrls: ['tag.component.css']
 })
-export class TagComponent implements OnChanges{
+export class TagComponent implements OnInit,OnChanges{
   visible: boolean = true;
   selectable: boolean = true;
   removable: boolean = true;
@@ -44,7 +44,8 @@ export class TagComponent implements OnChanges{
   colors=['primary','accent','warn','']
   @Input() Fruits = [];
   fruits=[];
-
+  ngOnInit(){
+  }
   ngOnChanges(){
     if(this.Fruits) {
       this.fruits = this.Fruits.map(x => ({name: x}))

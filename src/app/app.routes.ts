@@ -10,7 +10,6 @@ import { ScopeGuardService as ScopeGuard } from './auth/scope-guard.service';
 export const ROUTES: Routes = [
   { pathMatch: 'full',path: '', component: HomeComponent },
   { pathMatch: 'full',path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { pathMatch: 'full',path: 'ping', component: PingComponent, canActivate: [AuthGuard] },
   { pathMatch: 'full',path: 'admin', component: AdminComponent, canActivate: [ScopeGuard], data: { expectedScopes: ['write:messages']} },
   { pathMatch: 'full',path: 'callback', component: CallbackComponent },
   { pathMatch: 'full',path: '**', redirectTo: '' }
