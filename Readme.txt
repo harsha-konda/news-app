@@ -12,4 +12,5 @@ Tasks
 4. Search for Content +15pts: Text based search with powerful query features
 5. Content Feedback: Upvote, downvote, favorite features
 6. Better Content: tags can be enabled for each post which can be looked up in the profile page
+7. Implemented recommendations
 Individuals must provide tagging of terms onto favorites. 

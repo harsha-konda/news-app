@@ -16,7 +16,7 @@ export class HeartComponent implements OnInit {
 
   @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
   }

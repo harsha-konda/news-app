@@ -72,7 +72,6 @@ export class ProfileComponent implements OnInit {
       .getUserHeart(this.profile.nickname)
       .subscribe(data=>{
         this.hearts=data;
-        console.log(this.hearts);
       });
   }
 

@@ -64,7 +64,8 @@
           <div class="card">
             <div class="card-block">
               <mat-card class="list-group-item active">Favorited Posts</mat-card>
-              <mat-grid-list cols="2" rowHeight="610px">
+              <mat-card *ngIf="hearts?.length==0">No Favorited Posts</mat-card>
+              <mat-grid-list cols="2" rowHeight="{{hearts?.length==0?0:610}}px">
                 <mat-grid-tile *ngFor="let text of hearts" style="border: medium">
                   <mat-card style="margin:10px;">
                     <mat-card-header>
@@ -121,7 +122,9 @@
             <div class="card-block">
               <div class="list-group">
                 <mat-card class="list-group-item active">Recommendations</mat-card>
-                <app-recommendations [user]="this.profile.nickname"></app-recommendations>
+                <div *ngIf="this.profile">
+                  <app-recommendations [user]="this.profile.nickname"></app-recommendations>
+                </div>
               </div>
             </div>
           </div>

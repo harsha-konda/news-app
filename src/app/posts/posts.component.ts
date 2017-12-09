@@ -46,6 +46,7 @@ export class PostsComponent implements OnInit,OnChanges {
 
   ngOnChanges(){
     this.query();
+    this.heartSet=new Set(this.heart);
   }
 
 
