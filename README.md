@@ -1,7 +1,6 @@
 ## newsApp
 [![Build Status](https://travis-ci.com/harsha-konda/news-app.svg?token=rDtgdJpvq2dsfcM9RHLT&branch=master)](https://travis-ci.com/harsha-konda/news-app)
 #### Deploying
-
 ```
 cd news-app/script
 ./build.sh
